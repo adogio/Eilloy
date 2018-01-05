@@ -1,13 +1,15 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
+        "target": "es5",
         "module": "commonjs",
         "noImplicitAny": true,
         "strict": true,
         "strictNullChecks": false,
         "sourceMap": true,
-        "outDir": "./dist",
+        "outDir": "./dist/",
         "baseUrl": ".",
+        "jsx": "react",
         "paths": {
             "*": [
                 "node_modules/*"

@@ -1,25 +1,25 @@
-var Imap = require('imap')
-var MailParser = require("mailparser").MailParser
-var fs = require("fs")
+import * as fs from 'fs';
+import * as Imap from 'imap';
+import { MailParser } from 'mailparser';
 
-var imap = new Imap({
-    user: 'eilloytest@mail.com', //你的邮箱账号
-    password: 'R2pOD2E6sYttC0h', //你的邮箱密码
-    host: 'imap.mail.com', //邮箱服务器的主机地址
-    port: 993, //邮箱服务器的端口地址
-    tls: true, //使用安全传输协议
+const imap = new Imap({
+    user: 'eilloytest@mail.com',
+    password: 'R2pOD2E6sYttC0h',
+    host: 'imap.mail.com',
+    port: 993,
+    tls: true,
     tlsOptions: {
-        rejectUnauthorized: false
-    } //禁用对证书有效性的检查
+        rejectUnauthorized: false,
+    },
 });
 
-function openInbox(cb) {
-    imap.openBox('INBOX', true, cb);
+function openInbox(callBack: () => void) {
+    imap.openBox('INBOX', true, callBack);
 }
 
-imap.once('ready', function () {
+imap.once('ready', () => {
 
-    openInbox(function (err, box) {
+    openInbox((err, box) => {
 
         console.log("打开邮箱")
 

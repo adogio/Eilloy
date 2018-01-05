@@ -41,3 +41,11 @@ endif
 install:
 	npm install
 	npm install --only=dev
+
+reinstall: clean
+ifeq ($(UNAME), win32)
+	del .\node_modules\
+else
+	rm -rf ./node_modules/
+endif
+	make install

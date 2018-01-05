@@ -7,7 +7,7 @@
         "strict": true,
         "strictNullChecks": false,
         "sourceMap": true,
-        "outDir": "./dist/main/",
+        "outDir": "./dist/",
         "baseUrl": ".",
         "jsx": "react",
         "paths": {

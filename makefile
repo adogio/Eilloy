@@ -31,6 +31,9 @@ else
 	./node_modules/.bin/electron-builder
 endif
 
+tt:
+	node .\src\func\imap.js
+
 clean :
 ifeq ($(UNAME), win32)
 	del .\dist\

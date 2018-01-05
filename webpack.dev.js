@@ -1,22 +1,31 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const BUILD_DIR = path.resolve(__dirname, 'dist', 'renderer');
 const APP_DIR = path.resolve(__dirname, 'src', 'renderer');
 const PUBLIC_DIR = path.resolve(__dirname, 'public', 'template.html')
 
 let config = {
-    entry: APP_DIR + "/index.tsx",
+    devtool: 'cheap-module-eval-source-map',
+    entry: [
+        'react-hot-loader/patch',
+        'webpack-dev-server/client?http://localhost:8080/',
+        'webpack/hot/only-dev-server',
+        APP_DIR + "/index.tsx"
+    ],
     target: "electron-renderer",
     output: {
         filename: "bundle.js",
         path: BUILD_DIR
     },
+
+    // Enable sourcemaps for debugging webpack's output.
+    devtool: "source-map",
+
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json", '.css']
+        extensions: [".ts", ".tsx", ".js", ".json", ".css"]
     },
 
     module: {
@@ -53,13 +62,8 @@ let config = {
             title: 'Eilloy',
             template: PUBLIC_DIR
         }),
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production')
-            }
-        }),
-        new UglifyJSPlugin(),
-        new webpack.optimize.UglifyJsPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin()
     ]
 };
 

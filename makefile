@@ -4,10 +4,29 @@ else
 	UNAME := $(shell uname)
 endif
 
-Eilloy:
+Eilloy: page
 
 electron:
-	
+	tsc
+ifeq ($(UNAME), win32)
+	.\node_modules\.bin\electron .
+else
+	./node_modules/.bin/electron .
+endif
+
+page:
+ifeq ($(UNAME), win32)
+	.\node_modules\.bin\webpack-dev-server --config webpack.dev.js
+else
+	./node_modules/.bin/webpack-dev-server --config webpack.dev.js
+endif
+
+clean :
+ifeq ($(UNAME), win32)
+else
+	rm -rf dist/main/*.js dist/main/*.js.map  dist/renderer/*.js dist/renderer/*.js.map  dist/renderer/*.html dist
+endif
+
 install:
 	npm install
 	npm install --only=dev

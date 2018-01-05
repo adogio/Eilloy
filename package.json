@@ -19,6 +19,20 @@
   "bugs": {
     "url": "https://github.com/adogio/Eilloy/issues"
   },
+  "build": {
+    "productName": "adogiotemplate",
+    "appId": "io.adog.template",
+    "files": [
+      "build/",
+      "node_modules/electron/",
+      "package.json",
+      "build/renderer/index.html"
+    ],
+    "mac": {
+      "category": "efficiency"
+    },
+    "win": {}
+  },
   "homepage": "https://github.com/adogio/Eilloy#readme",
   "devDependencies": {
     "@types/chai": "^4.0.10",
@@ -31,7 +45,6 @@
     "chai": "^4.1.2",
     "concurrently": "^3.5.1",
     "css-loader": "^0.28.7",
-    "electron": "1.7.10",
     "electron-builder": "^19.52.1",
     "html-webpack-plugin": "^2.30.1",
     "mocha": "^4.1.0",
@@ -46,6 +59,8 @@
     "webpack-target-electron-renderer": "^0.4.0"
   },
   "dependencies": {
+    "electron": "1.7.10",
+    "electron-json-storage": "^4.0.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2"

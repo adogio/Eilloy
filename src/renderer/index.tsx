@@ -1,8 +1,21 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { AppContainer } from "react-hot-loader";
 
-import { Hello } from "./Hello";
+import { Hello } from "./hello";
 
-ReactDOM.render(
-    <Hello compiler="TypeScript" framework="React" />,
-    document.getElementById("example"));
+const render = (App: any) => {
+    ReactDOM.render(
+        <AppContainer>
+            <App />
+        </AppContainer>,
+        document.getElementById("example"));
+};
+
+render(Hello);
+if (module.hot) {
+    module.hot.accept("./hello", () => {
+        render(require("./hello").Hello);
+        console.log('test');
+    });
+}

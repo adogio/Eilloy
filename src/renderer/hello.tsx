@@ -9,7 +9,7 @@ export class Hello extends React.Component<IHelloProps, {}> {
     public render() {
         return <div><h1>
             Hello from {this.props.compiler} and {this.props.framework}!!!! is that magic strinsg! isit??
-            </h1>1231
+            </h1>12311
             <TTest></TTest>
         </div>;
     }

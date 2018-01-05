@@ -63,12 +63,11 @@ let config = {
     ],
     devServer: {
         hot: true,
-        host: 'localhost',
         contentBase: path.resolve(__dirname, 'dist', 'renderer'),
         publicPath: '/',
         port: 8080,
         inline: true,
-        historyApiFallback: false
+        historyApiFallback: true
     }
 };
 

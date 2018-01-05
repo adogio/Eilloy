@@ -6,7 +6,7 @@
 
 ## Development
 
-Two command line is required
+Two command line is required, to develop this repo, `npm -g install typescript` is required.
 
 ```bash
 make electron # For electron
@@ -17,6 +17,8 @@ make # For page
 ```
 
 ## Build
+
+To build this repo, `npm -g install typescript` is required.
 
 ```bash
 make build

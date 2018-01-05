@@ -1,0 +1,26 @@
+{
+  "name": "eilloy",
+  "version": "1.0.0",
+  "description": ":space_invader: A sample email client for us.",
+  "main": "src/main/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adogio/Eilloy.git"
+  },
+  "keywords": [
+    "email"
+  ],
+  "author": "WMXPY",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/adogio/Eilloy/issues"
+  },
+  "homepage": "https://github.com/adogio/Eilloy#readme",
+  "devDependencies": {
+    "electron": "1.7.10",
+    "tslint": "^5.8.0"
+  }
+}

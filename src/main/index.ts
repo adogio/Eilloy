@@ -9,7 +9,7 @@ const createWindow = () => {
         height: 500,
         show: false,
     });
-    win.loadURL(`file://${dirName}/dist/index.html`);
+    win.loadURL(`file://${dirName}/../renderer/index.html`);
     win.webContents.openDevTools();
     win.on('closed', (): void => win = null)
     win.on('ready-to-show', (): void => {

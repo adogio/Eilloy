@@ -1,8 +1,18 @@
-module.exports = {
-    entry: "./src/renderer/index.tsx",
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
+const BUILD_DIR = path.resolve(__dirname, 'dist', 'renderer');
+const APP_DIR = path.resolve(__dirname, 'src', 'renderer');
+const PUBLIC_DIR = path.resolve(__dirname, 'public', 'template.html')
+
+let config = {
+    entry: APP_DIR + "/index.tsx",
+    target: "electron-renderer",
     output: {
         filename: "bundle.js",
-        path: __dirname + "/dist/renderer"
+        path: BUILD_DIR
     },
 
     // Enable sourcemaps for debugging webpack's output.
@@ -38,4 +48,15 @@ module.exports = {
         "react": "React",
         "react-dom": "ReactDOM"
     },
+
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Eilloy',
+            template: PUBLIC_DIR
+        }),
+        new UglifyJSPlugin(),
+        new webpack.optimize.UglifyJsPlugin()
+    ]
 };
+
+module.exports = config;

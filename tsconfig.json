@@ -7,7 +7,7 @@
         "strict": true,
         "strictNullChecks": false,
         "sourceMap": true,
-        "outDir": "./dist/",
+        "outDir": "./dist/main/",
         "baseUrl": ".",
         "jsx": "react",
         "paths": {
@@ -17,6 +17,6 @@
         }
     },
     "include": [
-        "src/**/*"
+        "src/main/**/*"
     ]
 }

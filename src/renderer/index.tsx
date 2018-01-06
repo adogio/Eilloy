@@ -1,15 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { AppContainer } from "react-hot-loader";
-
-import { Hello } from "./hello";
+import { HashRouter } from 'react-router-dom';
+import Hello from "./hello";
 
 declare const module: any;
 
 const render = (App: any) => {
     ReactDOM.render(
         <AppContainer>
-            <App />
+            <HashRouter>
+                <App />
+            </HashRouter>
         </AppContainer>,
         document.getElementById("example"));
 };
@@ -17,7 +19,7 @@ const render = (App: any) => {
 render(Hello);
 if (module.hot) {
     module.hot.accept("./hello", () => {
-        render(require("./hello").Hello);
+        render(require("./hello").default);
         console.log('test');
     });
 }

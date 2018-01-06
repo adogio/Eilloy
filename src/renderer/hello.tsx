@@ -1,14 +1,24 @@
 import * as React from "react";
+import { Route } from 'react-router-dom';
 import TTest from "./test";
 
-export interface IHelloProps { compiler: string; framework: string; }
+export interface IProps {
+    versionNumber: any;
+}
 
-export class Hello extends React.Component<IHelloProps, {}> {
+class Component extends React.Component<IProps, {}> {
+
+    public componentDidMount() {
+        console.log(this.props);
+    }
+
     public render() {
         return <div><h1>
-            Hello from {this.props.compiler} and {this.props.framework}!!!! is that magic strinsg! isit??
+            Hello from !!!! is that magic strinsg! isit??
             </h1>12311afsafsafa
-            <TTest></TTest>
+            <Route path="/" component={TTest} />
         </div>;
     }
 }
+
+export default Component;

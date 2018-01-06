@@ -1,8 +1,14 @@
-import * as React from "react";
+import * as React from 'react';
 import imap from '../func/imap';
 import imapTest from '../func/imapTest.js';
 
-export default class TEST extends React.Component {
+export interface IProps {
+    history: any;
+    location: any;
+    match: any;
+}
+
+export default class TEST extends React.Component<IProps, {}> {
 
     public componentDidMount() {
         let s = imapTest;
@@ -21,9 +27,10 @@ export default class TEST extends React.Component {
         //     console.log(JSON.stringify(data));
         // });
         console.log(s);
+        console.log(this.props);
     }
 
     public render() {
-        return <h1>sadasss12</h1>;
+        return <h1>11123</h1>;
     }
 }

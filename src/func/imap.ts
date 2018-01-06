@@ -63,7 +63,7 @@ class ImapConfiger {
                             const singleEmail: Iemail = { queue: seq };
                             msg.on('body', (stream: NodeJS.ReadableStream, info: Imap.ImapMessageBodyInfo) => {
                                 stream.pipe(mailparser);
-                                mailparser.on("headers", (header) => {
+                                mailparser.on("headers", (header: any) => {
                                     singleEmail.subject = header.get('subject');
                                     singleEmail.from = header.get('from').text;
                                     singleEmail.to = header.get('to').text;

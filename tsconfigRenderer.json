@@ -3,19 +3,13 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
-        "noImplicitAny": true,
-        "strict": true,
+        "noImplicitAny": false,
+        "strict": false,
         "removeComments": true,
         "strictNullChecks": false,
-        "noImplicitThis": true,
+        "noImplicitThis": false,
         "sourceMap": true,
-        "outDir": "./dist/",
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "node_modules/*"
-            ]
-        },
+        "jsx": "react",
         "lib": [
             "dom",
             "es5",
@@ -25,8 +19,8 @@
         ]
     },
     "include": [
-        "src/main/**/*",
         "src/func/**/*",
+        "src/renderer/**/*",
         "src/interfaces/**/*"
     ]
 }

@@ -4,6 +4,8 @@ import { AppContainer } from "react-hot-loader";
 
 import { Hello } from "./hello";
 
+declare const module: any;
+
 const render = (App: any) => {
     ReactDOM.render(
         <AppContainer>

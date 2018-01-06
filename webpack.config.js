@@ -23,19 +23,21 @@ let config = {
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             {
                 test: /\.tsx?$/,
-                loader: "awesome-typescript-loader",
-                include: path.resolve(__dirname, 'src', 'renderer')
+                use: [{
+                    loader: 'awesome-typescript-loader',
+                    options: {
+                        configFileName: './tsconfigRenderer.json'
+                    }
+                }]
             },
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
-                include: path.resolve(__dirname, 'src', 'renderer')
             },
             {
                 enforce: "pre",
                 test: /\.js$/,
                 loader: "source-map-loader",
-                include: path.resolve(__dirname, 'src', 'renderer')
             }
         ]
     },

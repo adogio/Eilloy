@@ -25,15 +25,13 @@ let config = {
     },
     module: {
         rules: [{
-                test: /\.ts?$/,
-                use: [
-                    'awesome-typescript-loader'
-                ]
-            }, {
                 test: /\.tsx?$/,
-                use: [
-                    'awesome-typescript-loader'
-                ]
+                use: [{
+                    loader: 'awesome-typescript-loader',
+                    options: {
+                        configFileName: './tsconfigRenderer.json'
+                    }
+                }]
             },
             {
                 test: /\.css$/,

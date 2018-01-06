@@ -1,9 +1,11 @@
 import * as React from "react";
 import imap from '../func/imap';
+import imapTest from '../func/imapTest.js';
 
 export default class TEST extends React.Component {
 
     public componentDidMount() {
+        let s = imapTest;
         // const b = new imap({
         //     user: 'eilloytest@mail.com',
         //     password: 'R2pOD2E6sYttC0h',
@@ -16,8 +18,9 @@ export default class TEST extends React.Component {
         //     },
         // });
         // b.search('May 20, 2017').then((data) => {
-        //     console.log(data);
+        //     console.log(JSON.stringify(data));
         // });
+        console.log(s);
     }
 
     public render() {

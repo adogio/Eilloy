@@ -1,5 +1,3 @@
-import { Promise } from 'es6-promise';
-
 import * as fs from 'fs';
 import * as Imap from 'imap';
 import { Config } from 'imap';

@@ -3,6 +3,7 @@ import { Promise } from 'es6-promise';
 import * as fs from 'fs';
 import * as Imap from 'imap';
 import { MailParser } from 'mailparser';
+import Ibox from '../interfaces/box.interface';
 import Iemail from '../interfaces/email.interface';
 import Iuser from '../interfaces/user.interface';
 
@@ -18,18 +19,31 @@ export default class {
     public search(since: string) {
         return new Promise((resolve, reject) => {
             const reList: Iemail[] = [];
+            const reBox: Ibox = { mails: reList };
             const imap = new Imap(this.config);
             imap.on('error', (err: Error) => {
                 console.log(err);
                 throw err;
             });
             imap.on('end', () => {
-                resolve(reList);
+                resolve(reBox);
                 // console.log('关闭邮箱');
             });
             imap.once('ready', () => {
                 this.openInbox(imap, (inboxError: Error, box: any) => {
                     // console.log("打开邮箱");
+                    reBox.name = box.name;
+                    reBox.flags = box.flags;
+                    reBox.readOnly = box.readOnly;
+                    reBox.uidLimit = box.uidvalidity;
+                    reBox.uidNext = box.uidnext;
+                    reBox.premFlags = box.permFlags;
+                    reBox.keywords = box.keywords;
+                    reBox.newKeywords = box.newKeywords;
+                    reBox.persistentUids = box.persistentUIDs;
+                    reBox.nomodseq = box.nomodseq;
+                    reBox.newMessages = box.messages ? box.messages.new : null;
+                    reBox.totalMessages = box.messages ? box.messages.total : null;
                     if (inboxError) {
                         reject(inboxError);
                         throw inboxError;

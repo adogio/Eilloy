@@ -3,9 +3,9 @@ import { Promise } from 'es6-promise';
 import * as fs from 'fs';
 import * as Imap from 'imap';
 import { MailParser } from 'mailparser';
-import Ibox from '../interfaces/box.interface';
-import Iemail from '../interfaces/email.interface';
-import Iuser from '../interfaces/user.interface';
+import Ibox from '../interfaces/box';
+import Iemail from '../interfaces/email';
+import Iuser from '../interfaces/user';
 
 export default class {
     private config: Imap.Config;

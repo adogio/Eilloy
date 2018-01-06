@@ -9,8 +9,8 @@ const createWindow = () => {
         height: 1024,
         show: false,
     });
-    win.loadURL(`file://${dirName}/../renderer/index.html`);
-    // win.loadURL("http://localhost:8080");
+    // win.loadURL(`file://${dirName}/../renderer/index.html`);
+    win.loadURL("http://localhost:8080");
     win.webContents.openDevTools();
     win.on("closed", (): void => win = null);
     win.on("ready-to-show", (): void => {

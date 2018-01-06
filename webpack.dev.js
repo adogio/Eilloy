@@ -25,25 +25,27 @@ let config = {
     },
     module: {
         rules: [{
+                test: /\.ts?$/,
+                use: [
+                    'awesome-typescript-loader'
+                ]
+            }, {
                 test: /\.tsx?$/,
                 use: [
                     'awesome-typescript-loader'
-                ],
-                include: path.resolve(__dirname, 'src', 'renderer')
+                ]
             },
             {
                 test: /\.css$/,
                 use: [
                     'style-loader',
                     'css-loader'
-                ],
-                include: path.resolve(__dirname, 'src', 'renderer')
+                ]
             },
             {
                 enforce: "pre",
                 test: /\.js$/,
                 loader: "source-map-loader",
-                include: path.resolve(__dirname, 'src', 'renderer')
             }
         ]
     },

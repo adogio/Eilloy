@@ -1,4 +1,4 @@
-import Iemail from './email.interface';
+import Iemail from './email';
 
 export default interface Ibox {
     name?: string;

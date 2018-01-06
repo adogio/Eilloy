@@ -19,60 +19,59 @@ function openInbox(callBack: () => void) {
 
 imap.once('ready', () => {
 
-    openInbox((err, box) => {
+    openInbox(() => {
+        console.log("打开邮箱");
 
-        console.log("打开邮箱")
+        imap.search(['UNSEEN', ['SINCE', 'May 20, 2017']], (err: Error, results) => { // 搜寻2017-05-20以后未读的邮件
 
-        if (err) throw err;
+            if (err) {
+                throw err;
+            }
 
-        imap.search(['UNSEEN', ['SINCE', 'May 20, 2017']], function (err, results) { //搜寻2017-05-20以后未读的邮件
+            const f = imap.fetch(results, {
+                bodies: '',
+            }); // 抓取邮件（默认情况下邮件服务器的邮件是未读状态）
 
-            if (err) throw err;
+            f.on('message', (msg, seqno) => {
 
-            var f = imap.fetch(results, {
-                bodies: ''
-            }); //抓取邮件（默认情况下邮件服务器的邮件是未读状态）
+                const mailparser = new MailParser();
 
-            f.on('message', function (msg, seqno) {
+                msg.on('body', (stream, info) => {
 
-                var mailparser = new MailParser();
+                    stream.pipe(mailparser); // 将为解析的数据流pipe到mailparser
 
-                msg.on('body', function (stream, info) {
-
-                    stream.pipe(mailparser); //将为解析的数据流pipe到mailparser
-
-                    //邮件头内容
-                    mailparser.on("headers", function (headers) {
+                    // 邮件头内容
+                    mailparser.on("headers", (headers) => {
                         console.log("邮件头信息>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                         console.log("邮件主题: " + headers.get('subject'));
                         console.log("发件人: " + headers.get('from').text);
                         console.log("收件人: " + headers.get('to').text);
                     });
 
-                    //邮件内容
+                    // 邮件内容
 
-                    mailparser.on("data", function (data) {
-                        if (data.type === 'text') { //邮件正文
+                    mailparser.on("data", (data) => {
+                        if (data.type === 'text') { // 邮件正文
                             console.log("邮件内容信息>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                             console.log("邮件内容: " + data.html);
                         }
-                        if (data.type === 'attachment') { //附件
+                        if (data.type === 'attachment') { // 附件
                             console.log("邮件附件信息>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                            console.log("附件名称:" + data.filename); //打印附件的名称
-                            data.content.pipe(fs.createWriteStream(data.filename)); //保存附件到当前目录下
+                            console.log("附件名称:" + data.filename); // 打印附件的名称
+                            data.content.pipe(fs.createWriteStream(data.filename)); // 保存附件到当前目录下
                             data.release();
                         }
                     });
 
                 });
-                msg.once('end', function () {
+                msg.once('end', () => {
                     console.log(seqno + '完成');
                 });
             });
-            f.once('error', function (err) {
-                console.log('抓取出现错误: ' + err);
+            f.once('error', (mailparserErr) => {
+                console.log('抓取出现错误: ' + mailparserErr);
             });
-            f.once('end', function () {
+            f.once('end', () => {
                 console.log('所有邮件抓取完成!');
                 imap.end();
             });
@@ -80,11 +79,11 @@ imap.once('ready', () => {
     });
 });
 
-imap.once('error', function (err) {
+imap.once('error', (err: Error) => {
     console.log(err);
 });
 
-imap.once('end', function () {
+imap.once('end', () => {
     console.log('关闭邮箱');
 });
 

@@ -32,7 +32,7 @@ else
 endif
 
 tt:
-	node .\src\func\imap.js
+	node .\dist\func\test.js
 
 clean :
 ifeq ($(UNAME), win32)

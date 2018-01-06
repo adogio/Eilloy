@@ -1,88 +1,90 @@
+import { Promise } from 'es6-promise';
+
 import * as fs from 'fs';
 import * as Imap from 'imap';
 import { MailParser } from 'mailparser';
 import Iemail from '../interfaces/email.interface';
+import Iuser from '../interfaces/user.interface';
 
 export default class {
     private config: Imap.Config;
     private nickName: string;
-    private imap: Imap;
 
-    public constructor(config: Iemail) {
+    public constructor(config: Iuser) {
         this.config = config;
         this.nickName = config.nickName;
     }
 
-    public init() {
-        this.imap = new Imap(this.config);
-        this.imap.on('error', (err: Error) => {
-            console.log(err);
-            throw err;
-        });
-        this.imap.on('end', () => {
-            console.log('关闭邮箱');
-        });
-    }
-
     public search(since: string) {
-        this.imap.once('ready', () => {
-            this.openInbox((inboxError: Error, box: any) => {
-                console.log("打开邮箱");
-                if (inboxError) {
-                    throw inboxError;
-                }
-                this.imap.search(['UNSEEN', ['SINCE', since]], (searchErr: Error, results: number[]) => {
-                    if (searchErr) {
-                        throw searchErr;
+        return new Promise((resolve, reject) => {
+            const reList: Iemail[] = [];
+            const imap = new Imap(this.config);
+            imap.on('error', (err: Error) => {
+                console.log(err);
+                throw err;
+            });
+            imap.on('end', () => {
+                resolve(reList);
+                // console.log('关闭邮箱');
+            });
+            imap.once('ready', () => {
+                this.openInbox(imap, (inboxError: Error, box: any) => {
+                    // console.log("打开邮箱");
+                    if (inboxError) {
+                        reject(inboxError);
+                        throw inboxError;
                     }
-                    const f = this.imap.fetch(results, {
-                        bodies: '',
-                    }); // 抓取邮件（默认情况下邮件服务器的邮件是未读状态）
-                    f.on('message', (msg: Imap.ImapMessage, seq: number) => {
-                        const mailparser: MailParser = new MailParser();
-                        msg.on('body', (stream: NodeJS.ReadableStream, info: Imap.ImapMessageBodyInfo) => {
-                            stream.pipe(mailparser);
-                            mailparser.on("headers", (headers) => {
-                                console.log("邮件头信息>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                                console.log("邮件主题: " + headers.get('subject'));
-                                console.log("发件人: " + headers.get('from').text);
-                                console.log("收件人: " + headers.get('to').text);
+                    imap.search(['UNSEEN', ['SINCE', since]], (searchErr: Error, results: number[]) => {
+                        if (searchErr) {
+                            reject(searchErr);
+                            throw searchErr;
+                        }
+                        const f = imap.fetch(results, {
+                            bodies: '',
+                            // markSeen: true // 取消注释变为已读
+                        }); // 抓取邮件（默认情况下邮件服务器的邮件是未读状态）
+                        f.on('message', (msg: Imap.ImapMessage, seq: number) => {
+                            const mailparser: MailParser = new MailParser();
+                            const singleEmail: Iemail = { queue: seq };
+                            msg.on('body', (stream: NodeJS.ReadableStream, info: Imap.ImapMessageBodyInfo) => {
+                                stream.pipe(mailparser);
+                                mailparser.on("headers", (header) => {
+                                    singleEmail.subject = header.get('subject');
+                                    singleEmail.from = header.get('from').text;
+                                    singleEmail.to = header.get('to').text;
+                                });
+                                mailparser.on("data", (data) => {
+                                    if (data.type === 'text') {
+                                        singleEmail.content = data.html;
+                                    }
+                                    if (data.type === 'attachment') { // 附件
+                                        singleEmail.attachment = data.filename;
+                                        // data.content.pipe(fs.createWriteStream(data.filename)); // 保存附件到当前目录下
+                                        data.release();
+                                    }
+                                });
                             });
-                            mailparser.on("data", (data) => {
-                                if (data.type === 'text') { // 邮件正文
-                                    console.log("邮件内容信息>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                                    console.log("邮件内容: " + data.html);
-                                }
-                                if (data.type === 'attachment') { // 附件
-                                    console.log("邮件附件信息>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                                    console.log("附件名称:" + data.filename); // 打印附件的名称
-                                    data.content.pipe(fs.createWriteStream(data.filename)); // 保存附件到当前目录下
-                                    data.release();
-                                }
+                            msg.once('end', () => {
+                                reList.push(singleEmail);
                             });
-                        });
-                        msg.once('end', () => {
-                            console.log(seq + '完成');
                         });
                         f.once('error', (mailparserErr: Error) => {
-                            console.log('抓取出现错误: ' + mailparserErr);
+                            console.log('Fetch Error: ' + mailparserErr);
+                            reject(mailparserErr);
                             throw mailparserErr;
                         });
                         f.once('end', () => {
-                            console.log('所有邮件抓取完成!');
-                            this.imap.end();
+                            // console.log('所有邮件抓取完成!');
+                            imap.end();
                         });
                     });
                 });
             });
+            imap.connect();
         });
     }
 
-    public connect() {
-        this.imap.connect();
-    }
-
-    public openInbox(callBack: (inboxError: Error, box: any) => void) {
-        this.imap.openBox('INBOX', true, callBack);
+    public openInbox(imap: Imap, callBack: (inboxError: Error, box: any) => void) {
+        imap.openBox('INBOX', true, callBack);
     }
 }

@@ -1,13 +1,8 @@
-import { Config } from 'imap';
-
-export default interface IUser extends Config {
-    user: string;
-    password: string;
-    host: string;
-    port: number;
-    tls: boolean;
-    nickName: string;
-    tlsOptions: {
-        rejectUnauthorized: boolean;
-    };
+export default interface IEmail {
+    queue: number;
+    subject?: string;
+    from?: string;
+    to?: string;
+    content?: string | boolean;
+    attachment?: string;
 }

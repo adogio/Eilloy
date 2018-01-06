@@ -2,24 +2,27 @@ import { Promise } from 'es6-promise';
 
 import * as fs from 'fs';
 import * as Imap from 'imap';
+import { Config } from 'imap';
 import { MailParser } from 'mailparser';
 import Ibox from '../interfaces/box';
 import Iemail from '../interfaces/email';
 import Iuser from '../interfaces/user';
 
-export default class {
-    private config: Imap.Config;
+class ImapConfiger {
+    private config: Config;
     private nickName: string;
 
-    public constructor(config: Iuser) {
-        this.config = config;
-        this.nickName = config.nickName;
+    public constructor(userConfig: Iuser) {
+        this.config = userConfig;
+        this.nickName = userConfig.nickName;
     }
 
     public search(since: string) {
-        return new Promise((resolve, reject) => {
-            const reList: Iemail[] = [];
-            const reBox: Ibox = { mails: reList };
+        return new Promise((resolve: (result: any) => void, reject: (error: any) => void) => {
+            let reList: Iemail[] = [];
+            let reBox: Ibox = {
+                mails: reList,
+            };
             const imap = new Imap(this.config);
             imap.on('error', (err: Error) => {
                 console.log(err);
@@ -98,7 +101,10 @@ export default class {
         });
     }
 
-    public openInbox(imap: Imap, callBack: (inboxError: Error, box: any) => void) {
+    public openInbox(imap: Imap, callBack: (inboxError: Error, box: any) => void): void {
         imap.openBox('INBOX', true, callBack);
     }
 }
+
+
+export default ImapConfiger;

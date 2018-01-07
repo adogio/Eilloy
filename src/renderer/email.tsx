@@ -10,10 +10,11 @@ export interface IProps {
     match: any;
 }
 
-export default class TEST extends React.Component<IProps, {}> {
+export default class Menu extends React.Component<IProps, {}> {
 
     public constructor(props: IProps) {
         super(props);
+        console.log(props);
         this.toWelcome = this.toWelcome.bind(this);
     }
 
@@ -75,7 +76,7 @@ export default class TEST extends React.Component<IProps, {}> {
             </div>
             <div className="col-9 entire mainContent">
                 <h1>
-                    111213
+                    {this.props.match.params.mail}
                 </h1>
             </div>
         </div>);

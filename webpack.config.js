@@ -16,7 +16,7 @@ let config = {
     },
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json", '.css']
+        extensions: [".ts", ".tsx", ".js", ".json", '.css', '.sass']
     },
     module: {
         rules: [
@@ -31,8 +31,12 @@ let config = {
                 }]
             },
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                test: /\.sass$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
             },
             {
                 enforce: "pre",

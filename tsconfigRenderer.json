@@ -21,6 +21,7 @@
     "include": [
         "src/func/**/*",
         "src/renderer/**/*",
-        "src/interfaces/**/*"
+        "src/interfaces/**/*",
+        "src/components/**/*"
     ]
 }

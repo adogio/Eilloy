@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Route } from 'react-router-dom';
+import Topper from '../components/topper';
 import TTest from "./test";
 
 export interface IProps {
@@ -13,9 +14,8 @@ class Component extends React.Component<IProps, {}> {
     }
 
     public render() {
-        return <div><h1>
-            Hello from !!!! is that magic strinsg! isit??
-            </h1>12311afsafsafa
+        return <div>
+            <Topper cross={false} />
             <Route path="/" component={TTest} />
         </div>;
     }

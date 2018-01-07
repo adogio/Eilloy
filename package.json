@@ -61,9 +61,11 @@
   "dependencies": {
     "@types/imap": "^0.8.29",
     "@types/mailparser": "^2.0.2",
+    "@types/nodemailer": "^4.3.1",
     "electron-json-storage": "^4.0.2",
     "imap": "^0.8.19",
     "mailparser": "^2.1.0",
+    "nodemailer": "^4.4.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2"

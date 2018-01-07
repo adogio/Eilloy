@@ -1,7 +1,7 @@
 const a = {
     "mails": [{
         "queue": 2,
-        "subject": "12123123",
+        "subject": "123",
         "from": "eilloy test <eilloytest@mail.com>",
         "to": "eilloytest@mail.com",
         "content": "<html><head></head><body><div style=\"font-family: Verdana;font-size: 12.0px;\"><div>13</div></div></body></html>\n"
@@ -18,19 +18,25 @@ const a = {
         "from": "eilloy test <eilloytest@mail.com>",
         "to": "eilloytest@mail.com",
         "content": "<html><head></head><body><div style=\"font-family: Verdana;font-size: 12.0px;\"><div>&lt;script&gt;alert(123)&lt;/script&gt;</div></div></body></html>\n"
+    }, {
+        "queue": 9,
+        "subject": "sendTest",
+        "from": "👻 <eilloytest@mail.com>",
+        "to": "eilloytest@mail.com",
+        "content": "<h1>BIG</h1>\n"
     }],
     "name": "INBOX",
     "flags": ["\\Answered", "\\Flagged", "\\Deleted", "\\Seen", "\\Draft"],
     "readOnly": true,
     "uidLimit": 1515185399,
-    "uidNext": 6,
+    "uidNext": 10,
     "premFlags": ["\\Answered", "\\Flagged", "\\Draft", "\\Deleted", "\\Seen"],
     "keywords": [],
     "newKeywords": true,
     "persistentUids": true,
     "nomodseq": false,
-    "newMessages": 5,
-    "totalMessages": 5
+    "newMessages": 9,
+    "totalMessages": 9
 };
 
 export default a;

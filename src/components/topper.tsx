@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './style.css';
+import './style.sass';
 
 export interface IProps {
     cross: boolean;

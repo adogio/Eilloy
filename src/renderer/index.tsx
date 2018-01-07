@@ -4,7 +4,7 @@ import { AppContainer } from "react-hot-loader";
 import { HashRouter } from 'react-router-dom';
 import Hello from "./hello";
 
-import './global.css';
+import './global.sass';
 
 declare const module: any;
 

@@ -21,7 +21,7 @@ let config = {
         publicPath: '/'
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".json", ".css"]
+        extensions: [".ts", ".tsx", ".js", ".json", ".css", ".sass"]
     },
     module: {
         rules: [{
@@ -34,10 +34,11 @@ let config = {
                 }]
             },
             {
-                test: /\.css$/,
+                test: /\.sass$/,
                 use: [
                     'style-loader',
-                    'css-loader'
+                    'css-loader',
+                    'sass-loader'
                 ]
             },
             {

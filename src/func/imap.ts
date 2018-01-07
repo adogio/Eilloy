@@ -64,6 +64,14 @@ class ImapConfiger {
                             msg.on('body', (stream: NodeJS.ReadableStream, info: Imap.ImapMessageBodyInfo) => {
                                 stream.pipe(mailparser);
                                 mailparser.on("headers", (header: any) => {
+                                    singleEmail.received = header.get('received');
+                                    singleEmail.returnPath = header.get('return-path');
+                                    singleEmail.messageId = header.get('message-id');
+                                    singleEmail.cc = header.get('cc');
+                                    singleEmail.bcc = header.get('bcc');
+                                    singleEmail.priority = header.get('priority');
+                                    singleEmail.sensitivity = header.get('sensitivity');
+                                    singleEmail.date = header.get('date');
                                     singleEmail.subject = header.get('subject');
                                     singleEmail.from = header.get('from').text;
                                     singleEmail.to = header.get('to').text;
@@ -73,7 +81,13 @@ class ImapConfiger {
                                         singleEmail.content = data.html;
                                     }
                                     if (data.type === 'attachment') { // 附件
-                                        singleEmail.attachment = data.filename;
+                                        singleEmail.attachment = {
+                                            fileName: data.filename,
+                                            checksum: data.checksum,
+                                            contentType: data.contentType,
+                                            size: data.size,
+                                        };
+
                                         // data.content.pipe(fs.createWriteStream(data.filename)); // 保存附件到当前目录下
                                         data.release();
                                     }

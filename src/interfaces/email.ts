@@ -3,6 +3,22 @@ export default interface IEmail {
     subject?: string;
     from?: string;
     to?: string;
+    cc?: string;
+    bcc?: string;
+    date?: string;
+    messageId?: string;
+    returnPath?: string;
+    inReplyTo?: string;
+    replyTo?: string;
+    received?: string[];
+    priority?: string;
+    sensitivity?: string;
     content?: string | boolean;
-    attachment?: string;
+    contentType?: string;
+    attachment?: {
+        fileName: string;
+        checksum: string;
+        contentType: string;
+        size: number;
+    };
 }

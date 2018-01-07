@@ -48,7 +48,8 @@ export default class TEST extends React.Component<IProps, {}> {
         //     },
         // });
         // b.search('Jan 1, 2018').then((data) => {
-        //     console.log(JSON.stringify(data));
+        //     // console.log(JSON.stringify(data));
+        //     // console.log(data);
         // });
         console.log(s);
         console.log(this.props);
@@ -56,14 +57,10 @@ export default class TEST extends React.Component<IProps, {}> {
 
     public render() {
         return (<div className="row entire">
-            <div className="col-3 entire">
-                <Topper icon={{ icon: "angle-double-left", onClick: () => console.log('test') }} />
-                <h1>
-                    111213
-                </h1>
+            <div className="col-3 entire navContent">
+                <Topper icon={[{ icon: "angle-double-left", onClick: () => console.log('test') }, { icon: "angle-double-left", onClick: () => console.log('test') }]} alignRow={true} />
             </div>
-            <div className="col-9 entire">
-                <Topper icon={[{ icon: "align-center", onClick: () => console.log('test') }, { icon: "address-book", onClick: () => console.log('test') }]} />
+            <div className="col-9 entire mainContent">
                 <h1>
                     111213
                 </h1>

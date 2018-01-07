@@ -9,6 +9,7 @@ export interface IBtn {
 
 export interface IProps {
     icon: IBtn[] | IBtn;
+    alignRow?: boolean;
 }
 
 export default class TEST extends React.Component<IProps, {}> {
@@ -33,9 +34,10 @@ export default class TEST extends React.Component<IProps, {}> {
     }
 
     protected renderSingle(value: IBtn, index: number) {
-        return (<div className="column" key={index}>
+        return (<div className={this.props.alignRow ? "rows" : "columns"} key={index}>
             <button className="navButton" onClick={value.onClick}>
                 <i className={"fas fa-" + value.icon}></i>
+                <span className="description">123</span>
             </button>
         </div>);
     }

@@ -1,15 +1,36 @@
 @import '../func/color.sass'
 
-.topper
-    background-color: $lime
-    height: 40px
-
 .wrapper
     display: grid
 
-.column
+.columns
     grid-row: 1
+
+.rows
+    grid-column: 1
 
 .navButton
     height: 50px
+    background-color: $trans
+    border: 0
+    color: $black
+    cursor: pointer
     width: 100%
+    padding-left: 15%
+    padding-right: 0
+    font-size: 25px
+    white-space: nowrap
+    overflow: hidden
+    .description
+        padding-left: 5px
+        font-size: 20px
+        font-weight: bold
+        color: $trans
+
+.navButton:hover
+    background-color: $blue
+    color: $white
+    padding-left: 0
+    padding-right: 15%
+    .description
+        color: $yellow

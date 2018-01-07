@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Topper from '../components/topper';
 import imap from '../func/imap';
 import imapTest from '../func/imapTest.js';
 import mailer from '../func/mailer';
@@ -10,6 +11,11 @@ export interface IProps {
 }
 
 export default class TEST extends React.Component<IProps, {}> {
+
+    public constructor(props: IProps) {
+        super(props);
+        this.toWelcome = this.toWelcome.bind(this);
+    }
 
     public componentDidMount() {
         let s = imapTest;
@@ -49,6 +55,24 @@ export default class TEST extends React.Component<IProps, {}> {
     }
 
     public render() {
-        return <h1>111213</h1>;
+        return (<div className="row entire">
+            <div className="col-xs-3 entire">
+                <Topper cross={false} />
+                <h1>
+                    111213
+                </h1>
+            </div>
+            <div className="col-xs-9 entire">
+                <Topper cross={false} />
+                <h1>
+                    111213
+                </h1>
+            </div>
+        </div>);
+    }
+
+    protected toWelcome() {
+        console.log(this.props.history);
+        this.props.history.replace('/welcome');
     }
 }

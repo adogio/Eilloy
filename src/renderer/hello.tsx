@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Route } from 'react-router-dom';
-import Topper from '../components/topper';
 import TTest from "./test";
+import Welcome from './welcome';
 
 export interface IProps {
     versionNumber: any;
@@ -14,10 +14,12 @@ class Component extends React.Component<IProps, {}> {
     }
 
     public render() {
-        return <div>
-            <Topper cross={false} />
-            <Route path="/" component={TTest} />
-        </div>;
+        return (<div className="entire">
+            <div className="entire">
+                <Route path="/" exact={true} component={TTest} />
+                <Route path="/welcome" component={Welcome} />
+            </div>
+        </div>);
     }
 }
 

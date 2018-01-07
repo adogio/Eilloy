@@ -5,6 +5,7 @@ export interface IBtn {
     icon: string;
     onClick: () => void;
     important?: boolean;
+    text: string;
 }
 
 export interface IProps {
@@ -37,7 +38,7 @@ export default class TEST extends React.Component<IProps, {}> {
         return (<div className={this.props.alignRow ? "rows" : "columns"} key={index}>
             <button className="navButton" onClick={value.onClick}>
                 <i className={"fas fa-" + value.icon}></i>
-                <span className="description">123</span>
+                <div className="description">{value.text}</div>
             </button>
         </div>);
     }

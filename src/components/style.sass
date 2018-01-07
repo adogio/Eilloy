@@ -10,6 +10,8 @@
     grid-column: 1
 
 .navButton
+    text-align: left
+    transition: 0.3s all ease
     height: 50px
     background-color: $trans
     border: 0
@@ -22,6 +24,12 @@
     white-space: nowrap
     overflow: hidden
     .description
+        display: inline-table
+        left: 0px
+        top: 30px
+        white-space: nowrap
+        overflow: hidden
+        transition: 0.3s all ease
         padding-left: 5px
         font-size: 20px
         font-weight: bold
@@ -29,8 +37,6 @@
 
 .navButton:hover
     background-color: $blue
-    color: $white
-    padding-left: 0
-    padding-right: 15%
+    padding-left: 8%
     .description
         color: $yellow

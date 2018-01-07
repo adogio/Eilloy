@@ -56,14 +56,14 @@ export default class TEST extends React.Component<IProps, {}> {
 
     public render() {
         return (<div className="row entire">
-            <div className="col-xs-3 entire">
-                <Topper cross={false} />
+            <div className="col-3 entire">
+                <Topper icon={{ icon: "angle-double-left", onClick: () => console.log('test') }} />
                 <h1>
                     111213
                 </h1>
             </div>
-            <div className="col-xs-9 entire">
-                <Topper cross={false} />
+            <div className="col-9 entire">
+                <Topper icon={[{ icon: "align-center", onClick: () => console.log('test') }, { icon: "address-book", onClick: () => console.log('test') }]} />
                 <h1>
                     111213
                 </h1>

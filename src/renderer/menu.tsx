@@ -3,6 +3,9 @@ import Topper from '../components/topper';
 import imap from '../func/imap';
 import imapTest from '../func/imapTest.js';
 import mailer from '../func/mailer';
+import IBox from '../interfaces/box';
+import MailList from './emailList';
+
 
 export interface IProps {
     history: any;
@@ -10,15 +13,24 @@ export interface IProps {
     match: any;
 }
 
-export default class Menu extends React.Component<IProps, {}> {
+export interface IState {
+    box: IBox;
+}
+
+export default class Menu extends React.Component<IProps, IState> {
 
     public constructor(props: IProps) {
         super(props);
         this.toWelcome = this.toWelcome.bind(this);
+        this.state = {
+            box: {
+                mails: [],
+            },
+        };
     }
 
     public componentDidMount() {
-        let s = imapTest;
+        let s: any = imapTest;
         // let b = new mailer({
         //     host: 'smtp.mail.com',
         //     port: 465,
@@ -52,6 +64,9 @@ export default class Menu extends React.Component<IProps, {}> {
         //     // console.log(data);
         // });
         console.log(s);
+        this.setState({
+            box: s,
+        });
         console.log(this.props);
     }
 
@@ -61,22 +76,21 @@ export default class Menu extends React.Component<IProps, {}> {
                 <Topper
                     icon={[
                         {
-                            icon: "angle-double-left",
+                            icon: "angle-double-right",
                             onClick: () => console.log('test'),
-                            text: "返回",
+                            text: "队列",
+                            important: true,
                         },
                         {
-                            icon: "angle-double-left",
+                            icon: "sync",
                             onClick: () => console.log('test'),
-                            text: "下一封",
+                            text: "刷新",
                         },
                     ]}
                     alignRow={true} />
             </div>
             <div className="col-9 entire mainContent">
-                <h1>
-                    111213
-                </h1>
+                <MailList mails={this.state.box.mails} />
             </div>
         </div>);
     }

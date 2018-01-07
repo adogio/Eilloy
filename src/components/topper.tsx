@@ -13,7 +13,7 @@ export interface IProps {
     alignRow?: boolean;
 }
 
-export default class TEST extends React.Component<IProps, {}> {
+export default class Component extends React.Component<IProps, {}> {
 
     public constructor(props: IProps) {
         super(props);
@@ -36,8 +36,8 @@ export default class TEST extends React.Component<IProps, {}> {
 
     protected renderSingle(value: IBtn, index: number) {
         return (<div className={this.props.alignRow ? "rows" : "columns"} key={index}>
-            <button className="navButton" onClick={value.onClick}>
-                <i className={"fas fa-" + value.icon}></i>
+            <button className={"navButton" + (value.important ? " important" : "")} onClick={value.onClick}>
+                <i className={"fas fa-" + value.icon + " fa-fw"}></i>
                 <div className="description">{value.text}</div>
             </button>
         </div>);

@@ -80,7 +80,7 @@ export default class Menu extends React.Component<IProps, IState> {
 
     public render() {
         return (<div className="row entire">
-            <div className="col-3 entire navContent">
+            <div className="col-2 entire navContent">
                 <Topper
                     icon={[
                         {
@@ -94,10 +94,15 @@ export default class Menu extends React.Component<IProps, IState> {
                             onClick: () => console.log('test'),
                             text: "刷新",
                         },
+                        {
+                            icon: "cog",
+                            onClick: () => console.log('test'),
+                            text: "设置",
+                        },
                     ]}
                     alignRow={true} />
             </div>
-            <div className="col-9 entire mainContent">
+            <div className="col-10 entire mainContent">
                 <MailList mails={this.state.box.mails} user={this.user} />
             </div>
         </div>);

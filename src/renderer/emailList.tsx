@@ -19,19 +19,44 @@ export default class Component extends React.Component<IProps, {}> {
     public render() {
         return (
             <div className="mailList">
-                {this.props.mails.map(this.renderSingle)}
+                {this.props.mails.reverse().map(this.renderSingle)}
             </div>
         );
     }
 
     protected renderSingle(value: IEmail, index: number) {
+
+        let exclaColor: string;
+
+        switch (value.priority) {
+            case 'high':
+                exclaColor = 'red';
+                break;
+            case 'normal':
+                exclaColor = 'green';
+                break;
+            case 'low':
+                exclaColor = 'olive';
+                break;
+            default:
+                exclaColor = 'yellow';
+        }
+
         return (<div key={index}>
             <div className="subject">
+                <i className={"fas fa-exclamation-circle fa-fw pority-tag " + exclaColor} />
+                &nbsp;
                 {value.subject}
             </div>
             <div className="fromOrTo">
                 {this.isMeFrom(value.from)}
-                &nbsp;<i className="fas fa-arrow-circle-right fa-fw" />&nbsp;
+                &nbsp;
+                <a title={value.from}>
+                    <span className="smaller">(INFO)</span>
+                </a>
+                &nbsp;
+                <i className="fas fa-arrow-circle-right fa-fw" />
+                &nbsp;
                 {this.isMeTo(value.to)}
             </div>
             <div className="date">

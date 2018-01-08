@@ -78,7 +78,11 @@ class ImapConfiger {
                                 });
                                 mailparser.on("data", (data) => {
                                     if (data.type === 'text') {
-                                        singleEmail.content = data.html;
+                                        let html = "";
+                                        if (Boolean(data.html)) {
+                                            html = data.html.toString();
+                                        }
+                                        singleEmail.content = html;
                                     }
                                     if (data.type === 'attachment') { // 附件
                                         singleEmail.attachment = {

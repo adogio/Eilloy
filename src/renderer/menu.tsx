@@ -1,3 +1,4 @@
+import * as Storage from 'electron-json-storage';
 import * as React from 'react';
 import Topper from '../components/topper';
 import imap from '../func/imap';
@@ -6,6 +7,7 @@ import mailer from '../func/mailer';
 import IBox from '../interfaces/box';
 import IUser from '../interfaces/user';
 import MailList from './emailList';
+
 
 export interface IProps {
     history: any;
@@ -24,6 +26,7 @@ export default class Menu extends React.Component<IProps, IState> {
     public constructor(props: IProps) {
         super(props);
         this.toWelcome = this.toWelcome.bind(this);
+        this.readEmail = this.readEmail.bind(this);
         this.user = {
             host: 'smtp.mail.com',
             user: 'eilloytest@mail.com',
@@ -71,11 +74,12 @@ export default class Menu extends React.Component<IProps, IState> {
         //     // console.log(JSON.stringify(data));
         //     // console.log(data);
         // });
-        console.log(s);
+        Storage.set('list', s, (err: Error) => {
+            if (err) { throw err; }
+        });
         this.setState({
             box: s,
         });
-        console.log(this.props);
     }
 
     public render() {
@@ -109,9 +113,17 @@ export default class Menu extends React.Component<IProps, IState> {
                     alignRow={true} />
             </div>
             <div className="col-10 entire mainContent">
-                <MailList mails={this.state.box.mails} user={this.user} />
+                <MailList
+                    mails={this.state.box.mails}
+                    user={this.user}
+                    readEmail={this.readEmail}
+                />
             </div>
         </div>);
+    }
+
+    protected readEmail(mailId: number): void {
+        this.props.history.replace('/email/' + mailId);
     }
 
     protected toWelcome() {

@@ -5,6 +5,7 @@ import IUser from '../interfaces/user';
 export interface IProps {
     mails: IEmail[];
     user: IUser;
+    readEmail: (emailId: number) => void;
 }
 
 export default class Component extends React.Component<IProps, {}> {
@@ -17,9 +18,12 @@ export default class Component extends React.Component<IProps, {}> {
     }
 
     public render() {
+
+
+
         return (
             <div className="mailList">
-                {this.props.mails.reverse().map(this.renderSingle)}
+                {this.props.mails.slice(0).reverse().map(this.renderSingle)}
             </div>
         );
     }
@@ -50,8 +54,14 @@ export default class Component extends React.Component<IProps, {}> {
                 </a>);
         }
 
+        const read: () => void = () => {
+            this.props.readEmail(value.queue);
+        };
+
         return (<div key={index}>
-            <div className="subject">
+            <div
+                className="subject"
+                onClick={read}>
                 {exclaColor}
                 &nbsp;
                 {value.subject}

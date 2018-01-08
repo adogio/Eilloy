@@ -3,6 +3,7 @@ import { app, BrowserWindow } from "electron";
 let win: BrowserWindow;
 const dirName: string = __dirname;
 const env: string = "dev";
+// const env: string = "production";
 
 const createWindow: () => void = () => {
     if (env === 'dev') {

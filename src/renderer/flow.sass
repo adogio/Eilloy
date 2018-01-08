@@ -1,10 +1,15 @@
 @import '../func/color.sass'
 
+.mailCon
+    font-family: "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif
+    font-size: 18px
+
 .dot
     font-size: 10px
     
 .subject
     font-size: 26px
+    cursor: pointer
 
 .pority-tag
     font-size: 20px
@@ -19,3 +24,33 @@
     font-size: 10px
     color: $blue
     text-decoration: underline
+
+.moreinfo-button
+    font-size: 15px
+    font-weight: bold
+    font-family: "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif
+    transition: 0.3s all ease
+    cursor: pointer
+    border: 0
+    background-color: $lime
+    width: 100%
+    color: $black
+
+.moreinfo-button:hover
+    background-color: $yellow
+
+.info
+    font-size: 15px
+    transition: 0.8s all ease
+    height: auto
+    overflow: hidden
+    &.more
+        max-height: 150px
+    &.less
+        max-height: 0
+
+.received
+    width: 100%
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis

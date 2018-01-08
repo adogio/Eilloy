@@ -1,9 +1,10 @@
 import { app, BrowserWindow } from "electron";
 
+let win: BrowserWindow;
 const dirName: string = __dirname;
 const env: string = "dev";
-let win: BrowserWindow;
-const createWindow = () => {
+
+const createWindow: () => void = () => {
     if (env === 'dev') {
         win = new BrowserWindow({
             width: 1200,

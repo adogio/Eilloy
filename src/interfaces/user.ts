@@ -4,10 +4,10 @@ export default interface IUser extends Config {
     user: string;
     password: string;
     host: string;
-    port: number;
-    tls: boolean;
+    port?: number;
+    tls?: boolean;
     nickName: string;
-    tlsOptions: {
+    tlsOptions?: {
         rejectUnauthorized: boolean;
     };
 }

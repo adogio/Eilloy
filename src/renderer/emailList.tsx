@@ -14,7 +14,7 @@ export default class Component extends React.Component<IProps, {}> {
 
     public render() {
         return (
-            <div>
+            <div className="mailList">
                 {this.props.mails.map(this.renderSingle)}
             </div>
         );
@@ -22,8 +22,16 @@ export default class Component extends React.Component<IProps, {}> {
 
     protected renderSingle(value: IEmail, index: number) {
         return (<div key={index}>
-            <h1>{value.subject}</h1>
-            {value.from}
+            <div className="subject">
+                {value.subject}
+            </div>
+            <div className="fromOrTo">
+                {value.from}
+                &nbsp;<i className="fas fa-arrow-circle-right fa-fw" />&nbsp;
+                {value.to}
+            </div>
+            <i className="fas fa-circle fa-fw dot" />
+            <hr />
         </div>);
     }
 }

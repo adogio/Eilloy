@@ -4,6 +4,8 @@ import Email from './email';
 import Menu from "./menu";
 import Welcome from './welcome';
 
+import './flow.sass';
+
 export interface IProps {
     versionNumber: any;
 }

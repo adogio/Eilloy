@@ -79,10 +79,6 @@ export default class Menu extends React.Component<IProps, IState> {
                 <div className="fromOrTo">
                     {mail.from}
                     &nbsp;
-                <a title={mail.from}>
-                        <span className="smaller">(INFO)</span>
-                    </a>
-                    &nbsp;
                 <i className="fas fa-arrow-circle-right fa-fw" />
                     &nbsp;
                 {mail.to}
@@ -97,24 +93,26 @@ export default class Menu extends React.Component<IProps, IState> {
                     {this.state.more ? "隐藏" : "更多信息"}
                 </button>
                 <div className={"info " + (this.state.more ? "more" : "less")}>
+                    <i className="fa fa-info-circle fa-fw" />&nbsp;
                     重要性: {mail.priority}<br />
+                    <i className="fa fa-bolt fa-fw" />&nbsp;
                     敏感度: {mail.sensitivity}<br />
+                    <i className="fa fa-reply fa-fw" />&nbsp;
                     回复给: {mail.returnPath.text}<br />
                     {mail.received.map((value: string, index: number) => {
-                        return <a
-                            className="received"
-                            key={index}
-                            title={value}
-                        >
-                            来源
-                        &nbsp;
+                        return <span key={index}>
+                            <i className="fa fa-server fa-fw" />&nbsp;
+                            来源&nbsp;
                         {index + 1}
-                            :
-                        &nbsp;
-                        {value.substring(0, 40) +
-                                (value.length > 40 ? "..." : "")}
-                            <br />
-                        </a>;
+                            :&nbsp;
+                        <a
+                                className="received"
+                                title={value}
+                            >
+                                {value.substring(0, 40) +
+                                    (value.length > 40 ? "..." : "")}
+                                <br />
+                            </a></span>;
                     })}
                 </div>
                 <hr />

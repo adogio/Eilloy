@@ -26,25 +26,33 @@ export default class Component extends React.Component<IProps, {}> {
 
     protected renderSingle(value: IEmail, index: number) {
 
-        let exclaColor: string;
+        let exclaColor: any;
 
         switch (value.priority) {
             case 'high':
-                exclaColor = 'red';
+                exclaColor = (<a title="非常重要">
+                    <i className={"fas fa-exclamation-circle fa-fw pority-tag red"} />
+                </a>);
                 break;
             case 'normal':
-                exclaColor = 'green';
+                exclaColor = (<a title="一般">
+                    <i className={"fas fa-exclamation-circle fa-fw pority-tag green"} />
+                </a>);
                 break;
             case 'low':
-                exclaColor = 'olive';
+                exclaColor = (<a title="不重要">
+                    <i className={"fas fa-exclamation-circle fa-fw pority-tag olive"} />
+                </a>);
                 break;
             default:
-                exclaColor = 'yellow';
+                exclaColor = (<a title="没有优先级标注">
+                    <i className={"fas fa-exclamation-circle fa-fw pority-tag yellow"} />
+                </a>);
         }
 
         return (<div key={index}>
             <div className="subject">
-                <i className={"fas fa-exclamation-circle fa-fw pority-tag " + exclaColor} />
+                {exclaColor}
                 &nbsp;
                 {value.subject}
             </div>

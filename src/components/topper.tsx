@@ -4,7 +4,7 @@ import './style.sass';
 export interface IBtn {
     icon: string;
     onClick: () => void;
-    important?: boolean;
+    important?: number;
     text: string;
 }
 
@@ -35,8 +35,24 @@ export default class Component extends React.Component<IProps, {}> {
     }
 
     protected renderSingle(value: IBtn, index: number) {
+
+        let important: string;
+        if (value.important) {
+            switch (value.important) {
+                case 1:
+                    important = 'important1';
+                    break;
+                case 2:
+                    important = 'important2';
+                    break;
+                default:
+            }
+        } else {
+            important = '';
+        }
+
         return (<div className={this.props.alignRow ? "rows" : "columns"} key={index}>
-            <button className={"navButton" + (value.important ? " important" : "")} onClick={value.onClick}>
+            <button className={"navButton " + important} onClick={value.onClick}>
                 <i className={"fas fa-" + value.icon + " fa-fw"}></i>
                 <div className="description">{value.text}</div>
             </button>

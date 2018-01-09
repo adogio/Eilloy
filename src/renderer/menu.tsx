@@ -59,21 +59,21 @@ export default class Menu extends React.Component<IProps, IState> {
         // }).then((data) => {
         //     console.log(data);
         // });
-        // const b = new imap({
-        //     user: 'eilloytest@mail.com',
-        //     password: 'R2pOD2E6sYttC0h',
-        //     host: 'imap.mail.com',
-        //     port: 993,
-        //     tls: true,
-        //     nickName: 'ttt',
-        //     tlsOptions: {
-        //         rejectUnauthorized: false,
-        //     },
-        // });
-        // b.search('Jan 1, 2018').then((data) => {
-        //     // console.log(JSON.stringify(data));
-        //     // console.log(data);
-        // });
+        const b = new imap({
+            user: 'eilloytest@mail.com',
+            password: 'R2pOD2E6sYttC0h',
+            host: 'imap.mail.com',
+            port: 993,
+            tls: true,
+            nickName: 'ttt',
+            tlsOptions: {
+                rejectUnauthorized: false,
+            },
+        });
+        b.search('Jan 1, 2018').then((data) => {
+            console.log(JSON.stringify(data));
+            // console.log(data);
+        });
         Storage.set('list', s, (err: Error) => {
             if (err) { throw err; }
         });

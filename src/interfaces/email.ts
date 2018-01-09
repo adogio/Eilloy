@@ -1,11 +1,15 @@
 export default interface IEmail {
     queue: number;
+    size?: number;
+    which?: string;
+    uid?: number;
     subject?: string;
     from?: string;
     to?: string;
     cc?: string;
     bcc?: string;
-    date?: string;
+    date?: Date;
+    attrDate?: Date;
     messageId?: string;
     returnPath?: {
         html: string;
@@ -16,11 +20,15 @@ export default interface IEmail {
         html: string;
         text: string;
     };
+    flags?: string[];
     received?: string[];
     priority?: string;
+    antiSpam?: string;
     sensitivity?: string;
     content?: string;
     contentType?: string;
+    transferEncoding?: string;
+    mime?: string;
     attachment?: {
         fileName: string;
         checksum: string;

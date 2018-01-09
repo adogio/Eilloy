@@ -49,7 +49,7 @@ class ImapConfiger {
                         reject(inboxError);
                         throw inboxError;
                     }
-                    imap.search(['UNSEEN', ['SINCE', since]], (searchErr: Error, results: number[]) => {
+                    imap.search([['SINCE', since]], (searchErr: Error, results: number[]) => {
                         if (searchErr) {
                             reject(searchErr);
                             throw searchErr;
@@ -61,22 +61,27 @@ class ImapConfiger {
                         f.on('message', (msg: Imap.ImapMessage, seq: number) => {
                             const mailparser: MailParser = new MailParser();
                             const singleEmail: Iemail = { queue: seq };
-                            msg.on('body', (stream: NodeJS.ReadableStream, info: Imap.ImapMessageBodyInfo) => {
+                            msg.once('body', (stream: NodeJS.ReadableStream, info: Imap.ImapMessageBodyInfo) => {
                                 stream.pipe(mailparser);
-                                mailparser.on("headers", (header: any) => {
+                                singleEmail.size = info.size;
+                                singleEmail.which = info.which;
+                                mailparser.once("headers", (header: any) => {
                                     singleEmail.received = header.get('received');
                                     singleEmail.returnPath = header.get('return-path');
                                     singleEmail.messageId = header.get('message-id');
                                     singleEmail.cc = header.get('cc');
                                     singleEmail.bcc = header.get('bcc');
+                                    singleEmail.mime = header.get('mime-version');
                                     singleEmail.priority = header.get('priority');
+                                    singleEmail.antiSpam = header.get('x-gmx-antispam');
+                                    singleEmail.transferEncoding = header.get('content-transfer-encoding');
                                     singleEmail.sensitivity = header.get('sensitivity');
                                     singleEmail.date = header.get('date');
                                     singleEmail.subject = header.get('subject');
                                     singleEmail.from = header.get('from').text;
                                     singleEmail.to = header.get('to').text;
                                 });
-                                mailparser.on("data", (data) => {
+                                mailparser.once("data", (data: any) => {
                                     if (data.type === 'text') {
                                         let html = "";
                                         if (Boolean(data.html)) {
@@ -96,6 +101,11 @@ class ImapConfiger {
                                         data.release();
                                     }
                                 });
+                            });
+                            msg.once('attributes', (attrs: Imap.ImapMessageAttributes) => {
+                                singleEmail.uid = attrs.uid;
+                                singleEmail.attrDate = attrs.date;
+                                singleEmail.flags = attrs.flags;
                             });
                             msg.once('end', () => {
                                 reList.push(singleEmail);

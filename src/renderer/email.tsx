@@ -66,6 +66,7 @@ export default class Menu extends React.Component<IProps, IState> {
             </div>
             <div className="col-10 entire mainContent">
                 {this.renderMail()}
+                <i className="fas fa-check-square fa-fw" />
             </div>
         </div>);
     }

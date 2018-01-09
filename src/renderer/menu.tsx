@@ -118,6 +118,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     user={this.user}
                     readEmail={this.readEmail}
                 />
+                <i className="fas fa-check-square fa-fw" />
             </div>
         </div>);
     }

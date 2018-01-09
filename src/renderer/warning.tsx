@@ -48,7 +48,7 @@ export default class Component extends React.Component<IProps, {}> {
         this.props.onCancel();
     }
 
-    public mapMore(value: { icon: string, info: string, value: string, }, index: number) {
+    public mapMore(value: { icon: string, info: string, value: string }, index: number) {
         return (<a title={value.value} key={index}>
             <span className="warning-moreinfo">
                 <i className={`fas fa-${value.icon} fa-fw`} />

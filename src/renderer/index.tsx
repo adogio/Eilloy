@@ -15,13 +15,12 @@ const render = (App: any) => {
                 <App />
             </HashRouter>
         </AppContainer>,
-        document.getElementById("example"));
+        document.getElementById("container"));
 };
 
 render(Hello);
 if (module.hot) {
     module.hot.accept("./hello", () => {
         render(require("./hello").default);
-        console.log('test');
     });
 }

@@ -68,6 +68,7 @@ class Component extends React.Component<IProps, IState> {
                 onClick={this.state.warning.onClick}
                 onCancel={() => this.setState({
                     displayWarning: false,
+                    // display
                 })}
             />
             <div className={"entire" + (this.state.displayWarning ? " disable" : " enable")}>

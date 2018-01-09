@@ -30,7 +30,7 @@ export default interface IEmail {
     transferEncoding?: string;
     mime?: string;
     attachment?: Array<{
-        fileName: string;
+        fileName?: string;
         checksum?: string;
         contentType?: string;
         size?: number;

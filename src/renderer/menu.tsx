@@ -71,10 +71,10 @@ export default class Menu extends React.Component<IProps, IState> {
         //     },
         // });
         // b.search('Jan 1, 2018').then((data) => {
-        //     // console.log(JSON.stringify(data));
-        //     console.log(data);
+        //     console.log(JSON.stringify(data));
+        //     // console.log(data);
         // });
-        Storage.set('list', s, (err: Error) => {
+        Storage.set('list', s, {}, (err: Error) => {
             if (err) { throw err; }
         });
         console.log(s);
@@ -113,7 +113,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     ]}
                     alignRow={true} />
             </div>
-            <div className="col-10 entire mainContent">
+            <div className="col-10 entire mainContent padding-content">
                 <MailList
                     mails={this.state.box.mails}
                     user={this.user}

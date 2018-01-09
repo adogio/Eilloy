@@ -25,11 +25,34 @@ html
 
 .mainContent
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
+
+.padding-content
     padding-top: 20px
     padding-left: 6px
     padding-right: 6px
     padding-bottom: 10px
+
+.veryBottom
+    border-top: 10px solid $lime
+
+.above-create
+    overflow-y: auto
+    overflow-x: hidden;
+    transition: 0.3s all ease
+    &.uncreate
+        height: 100%
+    &.create
+        height: 50%
+
+.under-create
+    overflow-y: auto
+    overflow-x: hidden;
+    transition: 0.3s all ease
+    &.uncreate
+        height: 0%
+    &.create
+        height: 50%
 
 .veryFront
     cursor: default

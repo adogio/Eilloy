@@ -3,6 +3,7 @@ import * as React from 'react';
 import Topper from '../components/topper';
 import IBox from '../interfaces/box';
 import IEmail from '../interfaces/email';
+import Create from './create';
 
 export interface IProps {
     history: any;
@@ -13,6 +14,7 @@ export interface IProps {
 export interface IState {
     mail: IEmail;
     more: boolean;
+    create: boolean;
 }
 
 export default class Menu extends React.Component<IProps, IState> {
@@ -24,11 +26,12 @@ export default class Menu extends React.Component<IProps, IState> {
         this.state = {
             mail: void 0,
             more: false,
+            create: false,
         };
     }
 
     public componentDidMount() {
-        Storage.get('list', (err: Error, data: IBox) => {
+        Storage.get('list', {}, (err: Error, data: IBox) => {
             let mails: IEmail[] = data.mails;
             for (let i of mails) {
                 if (i.queue === parseInt(this.props.match.params.mail, 10)) {
@@ -48,25 +51,40 @@ export default class Menu extends React.Component<IProps, IState> {
                 <Topper
                     icon={[
                         {
+                            icon: "arrow-circle-right",
+                            onClick: () => console.log('test'),
+                            text: "继续",
+                            important: 2,
+                        },
+                        {
+                            icon: this.state.create ? "ban" : "reply",
+                            onClick: () => {
+                                this.setState({
+                                    create: this.state.create ? false : true,
+                                });
+                            },
+                            text: this.state.create ? "取消" : "回复",
+                            important: 1,
+                        },
+                        {
                             icon: "list",
                             onClick: () => {
                                 this.props.history.replace('/');
                             },
                             text: "总览",
-                            important: 2,
-                        },
-                        {
-                            icon: "angle-double-left",
-                            onClick: () => console.log('test'),
-                            text: "下一封",
                             important: 1,
                         },
                     ]}
                     alignRow={true} />
             </div>
             <div className="col-10 entire mainContent">
-                {this.renderMail()}
-                <i className="fas fa-check-square fa-fw" />
+                <div className={`above-create padding-content ${this.state.create ? "create" : "uncreate"}`}>
+                    {this.renderMail()}
+                    <i className="fas fa-check-square fa-fw" />
+                </div>
+                <div className={`under-create ${this.state.create ? "create" : "uncreate"}`}>
+                    <Create />
+                </div>
             </div>
         </div>);
     }
@@ -123,7 +141,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     <i className="fa fa-flag fa-fw" />&nbsp;
                         邮件旗帜: {mail.flags.map(this.mapFlags)}
                     <br />
-                    {/* {this.displayAttachment()} */}
+                    {this.displayAttachment()}
                 </div>
                 <hr />
                 <div
@@ -138,7 +156,7 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     protected displayAttachment() {
-        if (this.state.mail.attachment) {
+        if (this.state.mail.attachment && this.state.mail.attachment.length > 0) {
             return (<span><i className="fa fa-paperclip fa-fw" />&nbsp;
             附件: {this.state.mail.attachment.map(this.mapAttachment)}
                 <br /></span>);

@@ -7,14 +7,67 @@ html
         margin: 0
 
 .entire
+    transition: 0.3s all ease
     height: 100%
     margin: 0
     padding: 0
+    &.disable
+        user-select: none
+        pointer-events: none
+        filter: grayscale(90%)
+    &.enable
+        user-select: auto
+        pointer-events: auto
+        filter: none
 
 .navContent
     background-color: $lime
 
 .mainContent
+    overflow-x: hidden;
+    overflow-y: auto;
     padding-top: 20px
     padding-left: 6px
     padding-right: 6px
+
+.veryFront
+    cursor: default
+    user-select: none
+    transition: 0.3s all ease
+    position: fixed
+    left: 0px
+    background-color: $navy
+    width: 100%
+    z-index: 10
+    height: 80px
+    overflow: hidden
+    font-family: "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif
+    &.enabled
+        top: 0
+    &.disabled
+        top: -80px
+    .col-2
+        padding: 0
+    .col-8
+        padding: 0
+    .description
+        padding-top: 10px
+        padding-left: 30px
+        padding-right: 30px
+        color: $white
+    .btn
+        border-radius: 0
+        border: 0
+        padding: 0
+        width: 100%
+        height: 100%
+        background-color: $green
+        font-weight: bold
+        font-size: 20px
+    .btn:hover
+        background-color: $yellow
+
+.warning-moreinfo
+    cursor: help
+    color: $silver 
+    text-decoration: underline

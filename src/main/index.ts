@@ -1,8 +1,9 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Event, ipcMain } from "electron";
 
 let win: BrowserWindow;
 const dirName: string = __dirname;
 const env: string = "dev";
+let mainEvent: Event;
 // const env: string = "production";
 
 const createWindow: () => void = () => {
@@ -22,12 +23,21 @@ const createWindow: () => void = () => {
         });
         win.loadURL(`file://${dirName}/../renderer/index.html`);
     }
+    win.webContents.on('new-window', (event: Electron.Event, url: string) => {
+        event.preventDefault();
+        mainEvent.sender.send('blocked-open', url);
+    });
     win.on("closed", (): void => win = null);
     win.on("ready-to-show", (): void => {
         win.show();
         win.focus();
     });
+
 };
+
+ipcMain.on('main-register', (event: Event, arg: any) => {
+    mainEvent = event;
+});
 
 app.on("ready", () => {
     createWindow();

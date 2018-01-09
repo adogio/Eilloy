@@ -77,6 +77,7 @@ export default class Menu extends React.Component<IProps, IState> {
         Storage.set('list', s, (err: Error) => {
             if (err) { throw err; }
         });
+        console.log(s);
         this.setState({
             box: s,
         });

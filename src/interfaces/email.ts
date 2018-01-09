@@ -29,10 +29,10 @@ export default interface IEmail {
     contentType?: string;
     transferEncoding?: string;
     mime?: string;
-    attachment?: {
+    attachment?: Array<{
         fileName: string;
-        checksum: string;
-        contentType: string;
-        size: number;
-    };
+        checksum?: string;
+        contentType?: string;
+        size?: number;
+    }>;
 }

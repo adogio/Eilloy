@@ -60,7 +60,10 @@ class ImapConfiger {
                         }); // 抓取邮件（默认情况下邮件服务器的邮件是未读状态）
                         f.on('message', (msg: Imap.ImapMessage, seq: number) => {
                             const mailparser: MailParser = new MailParser();
-                            const singleEmail: Iemail = { queue: seq };
+                            const singleEmail: Iemail = {
+                                queue: seq,
+                                attachment: [],
+                            };
                             msg.once('body', (stream: NodeJS.ReadableStream, info: Imap.ImapMessageBodyInfo) => {
                                 stream.pipe(mailparser);
                                 singleEmail.size = info.size;
@@ -90,13 +93,12 @@ class ImapConfiger {
                                         singleEmail.content = html;
                                     }
                                     if (data.type === 'attachment') { // 附件
-                                        singleEmail.attachment = {
+                                        singleEmail.attachment.push({
                                             fileName: data.filename,
                                             checksum: data.checksum,
                                             contentType: data.contentType,
                                             size: data.size,
-                                        };
-
+                                        });
                                         // data.content.pipe(fs.createWriteStream(data.filename)); // 保存附件到当前目录下
                                         data.release();
                                     }

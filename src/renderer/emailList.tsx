@@ -54,13 +54,21 @@ export default class Component extends React.Component<IProps, {}> {
                 </a>);
         }
 
+        let flags: string = '';
+
+        for (let i of value.flags) {
+            if (i === '\\Seen') {
+                flags += ' seen';
+            }
+        }
+
         const read: () => void = () => {
             this.props.readEmail(value.queue);
         };
 
         return (<div key={index}>
             <div
-                className="subject"
+                className={"subject" + flags}
                 onClick={read}>
                 {exclaColor}
                 &nbsp;

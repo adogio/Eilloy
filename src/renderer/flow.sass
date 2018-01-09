@@ -10,6 +10,10 @@
 .subject
     font-size: 26px
     cursor: pointer
+    font-weight: bold
+    &.seen
+        font-weight: normal
+        color: $darkGray
 
 .pority-tag
     font-size: 20px
@@ -57,3 +61,7 @@
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
+
+.flag-element
+    text-decoration: underline
+    cursor: help

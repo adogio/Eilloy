@@ -43,7 +43,7 @@ class Component extends React.Component<IProps, IState> {
             this.setState({
                 displayWarning: true,
                 warning: {
-                    info: `您正在尝试打开外部链接，如果发件人不受信任，打开外部链接往往是高危操作。`,
+                    info: `您正在尝试打开外部链接。如果您不信任发件人，打开外部链接往往意味着危险！`,
                     button: '继续',
                     onClick: () => {
                         shell.openExternal(url);

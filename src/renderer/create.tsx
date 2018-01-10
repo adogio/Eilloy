@@ -1,11 +1,15 @@
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import * as React from 'react';
 
+export interface IProps {
+    full?: boolean;
+}
+
 export interface IState {
     editorState: EditorState;
 }
 
-export default class Component extends React.Component<{}, IState> {
+export default class Component extends React.Component<IProps, IState> {
 
     public constructor(props) {
         super(props);
@@ -52,13 +56,13 @@ export default class Component extends React.Component<{}, IState> {
                 }}>
                     <i className="fas fa-code fa-fw" />
                 </button>
-                <button
+                {!this.props.full && <button
                     className="bigger"
                     onClick={() => {
                         this.editorBasic('CODE');
                     }}>
                     <i className="fas fa-paper-plane fa-fw" />
-                </button>
+                </button>}
                 <div className="inner-editor">
                     <Editor
                         editorState={this.state.editorState}
@@ -79,6 +83,7 @@ export default class Component extends React.Component<{}, IState> {
     }
 
     protected onChange(editorState: EditorState) {
+        console.log(this.state.editorState.getCurrentContent());
         this.setState({
             editorState,
         });

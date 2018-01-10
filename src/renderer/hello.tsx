@@ -2,9 +2,12 @@ import { ipcRenderer, shell } from 'electron';
 import * as React from "react";
 import { Route } from 'react-router-dom';
 import Email from './email';
+import FullCreate from './fullCreate';
 import Menu from "./menu";
 import Warning from './warning';
 import Welcome from './welcome';
+
+import IWarning from '../interfaces/warning';
 
 import './flow.sass';
 
@@ -14,22 +17,29 @@ export interface IProps {
 
 export interface IState {
     displayWarning: boolean;
-    warning: {
-        info?: string;
-        button?: string;
-        onClick?: () => void;
-        more?: Array<{
-            icon: string,
-            info: string,
-            value: string,
-        }>;
-    };
+    warning: IWarning;
 }
+
+const renderMergedProps = (component, ...rest) => {
+    const finalProps = Object.assign({}, ...rest);
+    return (
+        React.createElement(component, finalProps)
+    );
+};
+
+const PropsRoute = ({ component, ...rest }) => {
+    return (
+        <Route {...rest} render={(routeProps) => {
+            return renderMergedProps(component, routeProps, rest);
+        }} />
+    );
+};
 
 class Component extends React.Component<IProps, IState> {
 
     public constructor(props: IProps) {
         super(props);
+        this.startWarning = this.startWarning.bind(this);
         this.state = {
             displayWarning: false,
             warning: {},
@@ -72,11 +82,35 @@ class Component extends React.Component<IProps, IState> {
                 })}
             />
             <div className={"entire" + (this.state.displayWarning ? " disable" : " enable")}>
-                <Route path="/" exact={true} component={Menu} />
-                <Route path="/email/:mail" exact={true} component={Email} />
-                <Route path="/welcome" component={Welcome} />
+                <PropsRoute
+                    path="/"
+                    exact={true}
+                    warning={this.startWarning}
+                    component={Menu} />
+                <PropsRoute
+                    path="/create"
+                    exact={true}
+                    warning={this.startWarning}
+                    component={FullCreate} />
+                <PropsRoute
+                    path="/email/:mail"
+                    exact={true}
+                    warning={this.startWarning}
+                    component={Email} />
+                <PropsRoute
+                    path="/welcome"
+                    exact={true}
+                    warning={this.startWarning}
+                    component={Welcome} />
             </div>
         </div>);
+    }
+
+    public startWarning(warning: IWarning) {
+        this.setState({
+            displayWarning: true,
+            warning,
+        });
     }
 }
 

@@ -57,6 +57,14 @@ export default class Menu extends React.Component<IProps, IState> {
                             important: 2,
                         },
                         {
+                            icon: "list",
+                            onClick: () => {
+                                this.props.history.replace('/');
+                            },
+                            text: "总览",
+                            important: 1,
+                        },
+                        {
                             icon: this.state.create ? "ban" : "reply",
                             onClick: () => {
                                 this.setState({
@@ -67,12 +75,11 @@ export default class Menu extends React.Component<IProps, IState> {
                             important: 1,
                         },
                         {
-                            icon: "list",
+                            icon: "flag",
                             onClick: () => {
                                 this.props.history.replace('/');
                             },
-                            text: "总览",
-                            important: 1,
+                            text: "标记为",
                         },
                     ]}
                     alignRow={true} />

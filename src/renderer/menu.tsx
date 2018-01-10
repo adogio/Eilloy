@@ -89,15 +89,17 @@ export default class Menu extends React.Component<IProps, IState> {
                 <Topper
                     icon={[
                         {
-                            icon: "plus",
-                            onClick: () => console.log('test'),
-                            text: "新建",
-                            important: 2,
-                        },
-                        {
                             icon: "angle-double-right",
                             onClick: () => console.log('test'),
                             text: "队列",
+                            important: 2,
+                        },
+                        {
+                            icon: "plus",
+                            onClick: () => {
+                                this.props.history.replace('/create');
+                            },
+                            text: "新建",
                             important: 1,
                         },
                         {

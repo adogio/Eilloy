@@ -5,6 +5,7 @@ import * as React from 'react';
 export interface IProps {
     full?: boolean;
     onChange: (html: string) => void;
+    onInputChange: (where: string, what: string) => void;
 }
 
 export interface IState {
@@ -16,6 +17,9 @@ export default class Component extends React.Component<IProps, IState> {
     public constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
+        this.handleCc = this.handleCc.bind(this);
+        this.handleSubject = this.handleSubject.bind(this);
+        this.handleTo = this.handleTo.bind(this);
         this.state = {
             editorState: EditorState.createEmpty(),
         };
@@ -27,15 +31,24 @@ export default class Component extends React.Component<IProps, IState> {
                 <div>
                     <i className="fas fa-tree fa-fw" />
                 </div>
-                <input placeholder="标题" />
+                <input
+                    placeholder="标题"
+                    onChange={this.handleSubject}
+                />
                 <div>
                     <i className="fas fa-share-square fa-fw" />
                 </div>
-                <input placeholder="收件人" />
+                <input
+                    placeholder="收件人"
+                    onChange={this.handleTo}
+                />
                 <div>
                     <i className="far fa-share-square fa-fw" />
                 </div>
-                <input placeholder="抄送" />
+                <input
+                    placeholder="抄送"
+                    onChange={this.handleCc}
+                />
             </div>
             <div className="editor">
                 <button onClick={() => {
@@ -89,5 +102,17 @@ export default class Component extends React.Component<IProps, IState> {
         this.setState({
             editorState,
         });
+    }
+
+    protected handleTo(event: React.ChangeEvent<HTMLInputElement>) {
+        this.props.onInputChange('to', event.target.value);
+    }
+
+    protected handleCc(event: React.ChangeEvent<HTMLInputElement>) {
+        this.props.onInputChange('cc', event.target.value);
+    }
+
+    protected handleSubject(event: React.ChangeEvent<HTMLInputElement>) {
+        this.props.onInputChange('subject', event.target.value);
     }
 }

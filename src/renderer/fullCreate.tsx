@@ -23,8 +23,11 @@ export default class Component extends React.Component<IProps, IState> {
     public constructor(props: IProps) {
         super(props);
         this.onEditorChange = this.onEditorChange.bind(this);
+        this.onInputChange = this.onInputChange.bind(this);
+        this.send = this.send.bind(this);
         this.state = {
             to: '',
+            cc: '',
             subject: '',
             content: '',
         };
@@ -38,15 +41,16 @@ export default class Component extends React.Component<IProps, IState> {
                         {
                             icon: "paper-plane",
                             onClick: () => {
+                                console.log(this.state);
                                 this.props.warning({
                                     info: '确认发送邮件? 您可以确认: ',
-                                    disable: true,
+                                    disable: (this.state.to.length === 0),
                                     button: '发送',
-                                    onClick: () => console.log('test'),
+                                    onClick: this.send,
                                     more: [{
                                         icon: 'paper-plane',
                                         info: '我发送给谁?',
-                                        value: this.state.to || '没有收件人',
+                                        value: (this.state.to.length > 0) ? this.state.to : '没有收件人',
                                     }],
                                 });
                             },
@@ -76,14 +80,42 @@ export default class Component extends React.Component<IProps, IState> {
                 <Create
                     full={true}
                     onChange={this.onEditorChange}
+                    onInputChange={this.onInputChange}
                 />
             </div>
         </div>);
+    }
+
+    protected send() {
+
     }
 
     protected onEditorChange(html: string) {
         this.setState({
             content: html,
         });
+    }
+
+    protected onInputChange(where: string, what: string) {
+        console.log(where, what);
+        switch (where) {
+            case 'subject':
+                this.setState({
+                    subject: what,
+                });
+                break;
+            case 'cc':
+                this.setState({
+                    cc: what,
+                });
+                break;
+            case 'to':
+                this.setState({
+                    to: what,
+                });
+                break;
+            default:
+                console.log(where, what);
+        }
     }
 }

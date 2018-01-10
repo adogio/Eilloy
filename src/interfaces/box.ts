@@ -2,6 +2,7 @@ import Iemail from './email';
 
 export default interface Ibox {
     name?: string;
+    gName?: string;
     flags?: string[];
     readOnly?: boolean;
     uidLimit?: number;
@@ -13,5 +14,8 @@ export default interface Ibox {
     nomodseq?: boolean;
     totalMessages?: number;
     newMessages?: number;
+    attribs?: string[];
+    special?: string;
+    children?: any[];
     mails: Iemail[];
 }

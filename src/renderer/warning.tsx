@@ -4,6 +4,7 @@ export interface IProps {
     display: boolean;
     info: string;
     button: string;
+    disable?: boolean;
     more: Array<{
         icon: string,
         info: string,
@@ -29,7 +30,9 @@ export default class Component extends React.Component<IProps, {}> {
                     {this.props.more ? this.props.more.map(this.mapMore) : void 0}
                 </div>
                 <div className="col-2">
-                    <button className="btn"
+                    <button
+                        disabled={this.props.disable}
+                        className={'btn'}
                         onClick={this.handleClick}>
                         {this.props.button}
                     </button>

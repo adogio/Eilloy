@@ -76,6 +76,7 @@ class Component extends React.Component<IProps, IState> {
                 button={this.state.warning.button}
                 more={this.state.warning.more}
                 onClick={this.state.warning.onClick}
+                disable={this.state.warning.disable}
                 onCancel={() => this.setState({
                     displayWarning: false,
                     // display

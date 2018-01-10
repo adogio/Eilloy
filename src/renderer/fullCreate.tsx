@@ -40,12 +40,13 @@ export default class Component extends React.Component<IProps, IState> {
                             onClick: () => {
                                 this.props.warning({
                                     info: '确认发送邮件? 您可以确认: ',
+                                    disable: true,
                                     button: '发送',
                                     onClick: () => console.log('test'),
                                     more: [{
                                         icon: 'paper-plane',
                                         info: '我发送给谁?',
-                                        value: '傻逼',
+                                        value: this.state.to || '没有收件人',
                                     }],
                                 });
                             },

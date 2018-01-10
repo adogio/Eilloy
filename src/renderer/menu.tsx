@@ -113,7 +113,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     ]}
                     alignRow={true} />
             </div>
-            <div className="col-10 entire mainContent padding-content">
+            <div className="col-10 entire mainContent padding-content overflow">
                 <MailList
                     mails={this.state.box.mails}
                     user={this.user}

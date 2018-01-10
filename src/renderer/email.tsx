@@ -145,6 +145,7 @@ export default class Menu extends React.Component<IProps, IState> {
                 </div>
                 <hr />
                 <div
+                    className="auto-margin"
                     dangerouslySetInnerHTML={
                         { __html: mail.content }
                     }>

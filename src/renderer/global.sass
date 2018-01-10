@@ -37,9 +37,16 @@ html
     border-top: 10px solid $lime
     height: 100%
 
-.above-create
+.overflow
     overflow-y: auto
-    overflow-x: hidden;
+    overflow-x: hidden
+
+.auto-margin
+    margin: 0 auto
+    width: 100%
+
+.above-create
+    @extend .overflow
     transition: 0.3s all ease
     &.uncreate
         height: 100%
@@ -47,8 +54,7 @@ html
         height: 50%
 
 .under-create
-    overflow-y: auto
-    overflow-x: hidden;
+    @extend .overflow
     transition: 0.3s all ease
     &.uncreate
         height: 0%

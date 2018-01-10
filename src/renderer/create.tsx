@@ -19,6 +19,10 @@ export default class Component extends React.Component<{}, IState> {
         return (<div className="veryBottom padding-content">
             <div className="targets">
                 <div>
+                    <i className="fas fa-tree fa-fw" />
+                </div>
+                <input placeholder="标题" />
+                <div>
                     <i className="fas fa-share-square fa-fw" />
                 </div>
                 <input placeholder="收件人" />
@@ -47,6 +51,13 @@ export default class Component extends React.Component<{}, IState> {
                     this.editorBasic('CODE');
                 }}>
                     <i className="fas fa-code fa-fw" />
+                </button>
+                <button
+                    className="bigger"
+                    onClick={() => {
+                        this.editorBasic('CODE');
+                    }}>
+                    <i className="fas fa-paper-plane fa-fw" />
                 </button>
                 <div className="inner-editor">
                     <Editor

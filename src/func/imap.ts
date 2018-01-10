@@ -142,6 +142,7 @@ class ImapConfiger {
             });
             imap.on('end', () => {
                 resolve(reBox);
+                console.log(imap.state);
                 console.log('关闭邮箱');
             });
             imap.once('ready', () => {
@@ -276,9 +277,15 @@ class ImapConfiger {
     protected iterBox(boxes: Ibox[], since: any[], maxLength: number, imap: Imap) {
         return new Promise((resolve: (result: any) => void, reject: (error: any) => void) => {
             const iter = (length: number) => {
+                console.log(length, maxLength, imap.state);
                 if (length >= maxLength) {
                     resolve(length);
+                    console.log(length);
                     return;
+                } else {
+                    if (imap.state === 'disconnected') {
+                        imap.connect();
+                    }
                 }
                 this.fetchBox(boxes[length], since, imap).then((result) => {
                     iter(length + 1);

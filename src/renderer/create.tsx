@@ -1,8 +1,10 @@
 import { Editor, EditorState, RichUtils } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 import * as React from 'react';
 
 export interface IProps {
     full?: boolean;
+    onChange: (html: string) => void;
 }
 
 export interface IState {
@@ -83,7 +85,7 @@ export default class Component extends React.Component<IProps, IState> {
     }
 
     protected onChange(editorState: EditorState) {
-        console.log(this.state.editorState.getCurrentContent());
+        this.props.onChange(stateToHTML(editorState.getCurrentContent()));
         this.setState({
             editorState,
         });

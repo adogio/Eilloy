@@ -12,15 +12,22 @@ export interface IProps {
 }
 
 export interface IState {
-    to?: string;
+    to: string;
     cc?: string;
-    subject?: string;
+    subject: string;
+    content: string;
 }
 
 export default class Component extends React.Component<IProps, IState> {
 
     public constructor(props: IProps) {
         super(props);
+        this.onEditorChange = this.onEditorChange.bind(this);
+        this.state = {
+            to: '',
+            subject: '',
+            content: '',
+        };
     }
 
     public render() {
@@ -65,8 +72,17 @@ export default class Component extends React.Component<IProps, IState> {
                 />
             </div>
             <div className="col-10 entire mainContent overflow">
-                <Create full={true} />
+                <Create
+                    full={true}
+                    onChange={this.onEditorChange}
+                />
             </div>
         </div>);
+    }
+
+    protected onEditorChange(html: string) {
+        this.setState({
+            content: html,
+        });
     }
 }

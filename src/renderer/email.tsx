@@ -90,7 +90,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     <i className="fas fa-check-square fa-fw" />
                 </div>
                 <div className={`under-create ${this.state.create ? "create" : "uncreate"}`}>
-                    <Create />
+                    <Create onChange={() => console.log('test')} />
                 </div>
             </div>
         </div>);

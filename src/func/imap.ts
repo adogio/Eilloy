@@ -158,14 +158,16 @@ class ImapConfiger {
                                 gName: key,
                             };
                             reBox.push(currentBox);
-                            this.fetchBox(currentBox, [['SINCE', since]], imap).catch((reason: any) => {
-                                reject(reason);
-                            });
                         }
                     }
+                    this.iterBox(reBox, [['SINCE', since]], reBox.length, imap).then((result: any) => {
+                        console.log(result);
+                    }).catch((reason: any) => {
+                        reject(reason);
+                    });
                 });
-                imap.connect();
             });
+            imap.connect();
         });
     }
 
@@ -175,7 +177,6 @@ class ImapConfiger {
             imap.openBox(currentBox.gName, true, (openErr: Error, mailbox: any) => {
                 if (openErr) {
                     reject(openErr);
-                    throw openErr;
                 }
                 currentBox.name = mailbox.name;
                 currentBox.flags = mailbox.flags;
@@ -192,7 +193,11 @@ class ImapConfiger {
                 imap.search(search, (searchErr: Error, results: number[]) => {
                     if (searchErr) {
                         reject(searchErr);
-                        throw searchErr;
+                    }
+                    if (results.length === 0) {
+                        resolve(currentBox.name);
+                        console.log(currentBox.name, 'None!');
+                        return;
                     }
                     const f = imap.fetch(results, {
                         bodies: '',
@@ -255,11 +260,10 @@ class ImapConfiger {
                     f.once('error', (mailparserErr: Error) => {
                         console.log('Fetch Error: ' + mailparserErr);
                         reject(mailparserErr);
-                        throw mailparserErr;
                     });
                     f.once('end', () => {
-                        console.log(currentBox.mails.length);
-                        console.log(currentBox.name, '所有邮件抓取完成!');
+                        resolve(currentBox.name);
+                        console.log(currentBox.name, 'Done!');
                         imap.end();
                     });
                 });
@@ -269,8 +273,28 @@ class ImapConfiger {
 
     }
 
-    protected iterBox(boxes: any, resolve: (result: any) => void, reject: (error: any) => void) {
-        console.log(boxes);
+    protected iterBox(boxes: Ibox[], since: any[], maxLength: number, imap: Imap) {
+        return new Promise((resolve: (result: any) => void, reject: (error: any) => void) => {
+            const iter = (length: number) => {
+                if (length >= maxLength) {
+                    resolve(length);
+                    return;
+                }
+                this.fetchBox(boxes[length], since, imap).then((result) => {
+                    iter(length + 1);
+                }).catch((reason: any) => {
+                    reject(reason);
+                });
+            };
+            if (maxLength === 0) {
+                resolve(0);
+            } else {
+                iter(0);
+            }
+        });
+
+
+
     }
 
     protected openInbox(imap: Imap, callBack: (inboxError: Error, box: any) => void): void {

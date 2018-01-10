@@ -2,12 +2,16 @@ import * as React from 'react';
 import Topper from '../components/topper';
 import Create from './create';
 
+import mailer from '../func/mailer';
+
+import IUser from '../interfaces/user';
 import IWarning from '../interfaces/warning';
 
 export interface IProps {
     history: any;
     location: any;
     match: any;
+    user: IUser;
     warning: (warning: IWarning) => void;
 }
 
@@ -41,7 +45,6 @@ export default class Component extends React.Component<IProps, IState> {
                         {
                             icon: "paper-plane",
                             onClick: () => {
-                                console.log(this.state);
                                 this.props.warning({
                                     info: '确认发送邮件? 您可以确认: ',
                                     disable: (this.state.to.length === 0),
@@ -87,7 +90,24 @@ export default class Component extends React.Component<IProps, IState> {
     }
 
     protected send() {
-
+        let b = new mailer({
+            host: this.props.user.host,
+            port: 465,
+            secure: true,
+            auth: {
+                user: this.props.user.user,
+                pass: this.props.user.password,
+            },
+        });
+        b.send({
+            from: `"👻" <${this.props.user.user}>`,
+            to: this.state.to,
+            subject: this.state.subject,
+            html: this.state.content,
+            priority: 'normal',
+        }).then((data) => {
+            console.log(data);
+        });
     }
 
     protected onEditorChange(html: string) {

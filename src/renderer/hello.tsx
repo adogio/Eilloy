@@ -7,7 +7,9 @@ import Menu from "./menu";
 import Warning from './warning';
 import Welcome from './welcome';
 
+import IUser from '../interfaces/user';
 import IWarning from '../interfaces/warning';
+
 
 import './flow.sass';
 
@@ -37,9 +39,17 @@ const PropsRoute = ({ component, ...rest }) => {
 
 class Component extends React.Component<IProps, IState> {
 
+    private user: IUser;
+
     public constructor(props: IProps) {
         super(props);
         this.startWarning = this.startWarning.bind(this);
+        this.user = {
+            host: 'smtp.mail.com',
+            user: 'eilloytest@mail.com',
+            password: 'R2pOD2E6sYttC0h',
+            nickName: 'ttt',
+        };
         this.state = {
             displayWarning: false,
             warning: {},
@@ -87,21 +97,25 @@ class Component extends React.Component<IProps, IState> {
                     path="/"
                     exact={true}
                     warning={this.startWarning}
+                    user={this.user}
                     component={Menu} />
                 <PropsRoute
                     path="/create"
                     exact={true}
                     warning={this.startWarning}
+                    user={this.user}
                     component={FullCreate} />
                 <PropsRoute
                     path="/email/:mail"
                     exact={true}
                     warning={this.startWarning}
+                    user={this.user}
                     component={Email} />
                 <PropsRoute
                     path="/welcome"
                     exact={true}
                     warning={this.startWarning}
+                    user={this.user}
                     component={Welcome} />
             </div>
         </div>);

@@ -132,6 +132,138 @@ class ImapConfiger {
     public searchAll(since: string) {
         return new Promise((resolve: (result: any) => void, reject: (error: any) => void) => {
             let reBox: Ibox[] = [];
+            let current: number = 0;
+            const imap: Imap = new Imap(this.config);
+            this.setupImap(imap, () => {
+                console.log(reBox);
+                for (let i of reBox) {
+                    const thread = new Imap(this.config);
+                    this.setupImap(thread, () => {
+                        if (current >= reBox.length) {
+                            resolve(reBox);
+                        }
+                    }, () => {
+                        thread.openBox(i.gName, (inboxError: Error, mailbox: any) => {
+                            i.name = mailbox.name;
+                            i.flags = mailbox.flags;
+                            i.readOnly = mailbox.readOnly;
+                            i.uidLimit = mailbox.uidvalidity;
+                            i.uidNext = mailbox.uidnext;
+                            i.premFlags = mailbox.permFlags;
+                            i.keywords = mailbox.keywords;
+                            i.newKeywords = mailbox.newKeywords;
+                            i.persistentUids = mailbox.persistentUIDs;
+                            i.nomodseq = mailbox.nomodseq;
+                            i.newMessages = mailbox.messages ? mailbox.messages.new : null;
+                            i.totalMessages = mailbox.messages ? mailbox.messages.total : null;
+                            if (inboxError) {
+                                reject(inboxError);
+                                throw inboxError;
+                            }
+                            thread.search([['SINCE', since]], (searchErr: Error, results: number[]) => {
+                                if (searchErr) {
+                                    reject(searchErr);
+                                    throw searchErr;
+                                }
+                                if (results.length === 0) {
+                                    return;
+                                }
+                                const f = thread.fetch(results, {
+                                    bodies: '',
+                                });
+                                f.on('message', (msg: Imap.ImapMessage, seq: number) => {
+                                    const mailparser: MailParser = new MailParser();
+                                    const singleEmail: Iemail = {
+                                        queue: seq,
+                                        attachment: [],
+                                    };
+                                    msg.once('body', (stream: NodeJS.ReadableStream, info: Imap.ImapMessageBodyInfo) => {
+                                        stream.pipe(mailparser);
+                                        singleEmail.size = info.size;
+                                        singleEmail.which = info.which;
+                                        mailparser.once("headers", (header: any) => {
+                                            singleEmail.received = header.get('received');
+                                            singleEmail.returnPath = header.get('return-path');
+                                            singleEmail.messageId = header.get('message-id');
+                                            singleEmail.cc = header.get('cc');
+                                            singleEmail.bcc = header.get('bcc');
+                                            singleEmail.mime = header.get('mime-version');
+                                            singleEmail.priority = header.get('priority');
+                                            singleEmail.antiSpam = header.get('x-gmx-antispam');
+                                            singleEmail.transferEncoding = header.get('content-transfer-encoding');
+                                            singleEmail.sensitivity = header.get('sensitivity');
+                                            singleEmail.date = header.get('date');
+                                            singleEmail.subject = header.get('subject');
+                                            singleEmail.from = header.get('from').text;
+                                            singleEmail.to = header.get('to').text;
+                                        });
+                                        mailparser.once("data", (data: any) => {
+                                            if (data.type === 'text') {
+                                                let html = "";
+                                                if (Boolean(data.html)) {
+                                                    html = data.html.toString();
+                                                }
+                                                singleEmail.content = html;
+                                            }
+                                            if (data.type === 'attachment') { // 附件
+                                                singleEmail.attachment.push({
+                                                    fileName: data.filename,
+                                                    checksum: data.checksum,
+                                                    contentType: data.contentType,
+                                                    size: data.size,
+                                                });
+                                                // data.content.pipe(fs.createWriteStream(data.filename)); // 保存附件到当前目录下
+                                                data.release();
+                                            }
+                                        });
+                                    });
+                                    msg.once('attributes', (attrs: Imap.ImapMessageAttributes) => {
+                                        singleEmail.uid = attrs.uid;
+                                        singleEmail.attrDate = attrs.date;
+                                        singleEmail.flags = attrs.flags;
+                                    });
+                                    msg.once('end', () => {
+                                        i.mails.push(singleEmail);
+                                    });
+                                });
+                                f.once('error', (mailparserErr: Error) => {
+                                    console.log('Fetch Error: ' + mailparserErr);
+                                    reject(mailparserErr);
+                                    throw mailparserErr;
+                                });
+                                f.once('end', () => {
+                                    // console.log('所有邮件抓取完成!');
+                                    thread.end();
+                                });
+                            });
+                        });
+                    });
+                }
+            }, () => {
+                imap.getBoxes((err: Error, boxes: any) => {
+                    let length: number = 0;
+                    for (let key in boxes) {
+                        if (key) {
+                            length++;
+                            let currentBox: Ibox = {
+                                mails: [],
+                                attribs: boxes[key].attribs,
+                                children: boxes[key].children,
+                                special: boxes[key].special_use_attrib,
+                                gName: key,
+                            };
+                            reBox.push(currentBox);
+                        }
+                    }
+                    imap.end();
+                });
+            });
+        });
+    }
+
+    public searchAll_old(since: string) {
+        return new Promise((resolve: (result: any) => void, reject: (error: any) => void) => {
+            let reBox: Ibox[] = [];
             // {
             //     mails: reList,
             // };
@@ -142,7 +274,6 @@ class ImapConfiger {
             });
             imap.on('end', () => {
                 resolve(reBox);
-                console.log(imap.state);
                 console.log('关闭邮箱');
             });
             imap.once('ready', () => {
@@ -170,6 +301,20 @@ class ImapConfiger {
             });
             imap.connect();
         });
+    }
+
+    protected setupImap(imap: Imap, end: () => void, ready: () => void) {
+        imap.on('error', (err: Error) => {
+            console.log(err);
+            throw err;
+        });
+        imap.on('end', () => {
+            end();
+        });
+        imap.once('ready', () => {
+            ready();
+        });
+        imap.connect();
     }
 
     protected fetchBox(currentBox: Ibox, search: any[], imap: Imap) {

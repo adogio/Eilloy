@@ -76,6 +76,9 @@ class Mailer {
                 rejectUnauthorized: false,
             },
         });
+        b.append('test', (err) => {
+            console.log(err);
+        });
     }
 }
 

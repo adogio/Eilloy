@@ -2,8 +2,8 @@ import * as React from 'react';
 import './style.sass';
 
 export interface IBtn {
-    icon: string;
-    onClick: () => void;
+    icon?: string;
+    onClick?: () => void;
     important?: number;
     text: string;
 }
@@ -35,6 +35,12 @@ export default class Component extends React.Component<IProps, {}> {
     }
 
     protected renderSingle(value: IBtn, index: number) {
+
+        if (value.text === 'hr') {
+            return (<div key={index} className={this.props.alignRow ? "rows" : "columns"}>
+                <hr />
+            </div>);
+        }
 
         let important: string;
         if (value.important) {

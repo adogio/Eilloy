@@ -22,14 +22,14 @@ export interface IState {
     warning: IWarning;
 }
 
-const renderMergedProps = (component, ...rest) => {
+const renderMergedProps: any = (component, ...rest) => {
     const finalProps = Object.assign({}, ...rest);
     return (
         React.createElement(component, finalProps)
     );
 };
 
-const PropsRoute = ({ component, ...rest }) => {
+const PropsRoute: any = ({ component, ...rest }) => {
     return (
         <Route {...rest} render={(routeProps) => {
             return renderMergedProps(component, routeProps, rest);
@@ -106,7 +106,7 @@ class Component extends React.Component<IProps, IState> {
                     user={this.user}
                     component={FullCreate} />
                 <PropsRoute
-                    path="/email/:mail"
+                    path="/email/:box/:mail"
                     exact={true}
                     warning={this.startWarning}
                     user={this.user}

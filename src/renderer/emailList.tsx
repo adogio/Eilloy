@@ -63,7 +63,7 @@ export default class Component extends React.Component<IProps, {}> {
         }
 
         const read: () => void = () => {
-            this.props.readEmail(value.queue);
+            this.props.readEmail(value.uid);
         };
 
         return (<div key={index}>

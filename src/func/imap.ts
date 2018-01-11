@@ -135,14 +135,14 @@ class ImapConfiger {
             let current: number = 0;
             const imap: Imap = new Imap(this.config);
             this.setupImap(imap, () => {
-                console.log(reBox);
                 for (let i of reBox) {
                     const thread = new Imap(this.config);
                     this.setupImap(thread, () => {
-                        if (current >= reBox.length) {
+                        if (current >= reBox.length - 1) {
                             resolve(reBox);
                         }
                     }, () => {
+                        current++;
                         thread.openBox(i.gName, (inboxError: Error, mailbox: any) => {
                             i.name = mailbox.name;
                             i.flags = mailbox.flags;

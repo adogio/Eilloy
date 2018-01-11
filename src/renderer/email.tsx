@@ -8,7 +8,12 @@ import Create from './create';
 export interface IProps {
     history: any;
     location: any;
-    match: any;
+    match: {
+        params: {
+            box: string;
+            mail: string;
+        };
+    };
 }
 
 export interface IState {
@@ -31,13 +36,13 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        Storage.get('list', {}, (err: Error, data: IBox) => {
-            let mails: IEmail[] = data.mails;
-            for (let i of mails) {
-                if (i.queue === parseInt(this.props.match.params.mail, 10)) {
-                    console.log(i);
+        Storage.get('list', {}, (err: Error, data: IBox[]) => {
+            let mails: IEmail[] = data[parseInt(this.props.match.params.box, 10)].mails;
+            for (let j of mails) {
+                if (j.queue === parseInt(this.props.match.params.mail, 10)) {
+                    console.log(j);
                     this.setState({
-                        mail: i,
+                        mail: j,
                     });
                     break;
                 }
@@ -129,9 +134,9 @@ export default class Menu extends React.Component<IProps, IState> {
                         敏感度: {mail.sensitivity}
                     <br />
                     <i className="fa fa-reply fa-fw" />&nbsp;
-                        回复给: {mail.returnPath.text}
+                        回复给: {mail.returnPath ? mail.returnPath.text : '没有这项信息'}
                     <br />
-                    {mail.received.map((value: string, index: number) => {
+                    {mail.received ? mail.received.map((value: string, index: number) => {
                         return <span key={index}>
                             <i className="fa fa-server fa-fw" />&nbsp;
                             来源&nbsp;
@@ -145,7 +150,7 @@ export default class Menu extends React.Component<IProps, IState> {
                                     (value.length > 40 ? "..." : "")}
                                 <br />
                             </a></span>;
-                    })}
+                    }) : void 0}
                 </div>
                 <div className="info">
                     <i className="fa fa-flag fa-fw" />&nbsp;

@@ -12,6 +12,7 @@ const createWindow: () => void = () => {
             width: 1200,
             height: 1020,
             show: false,
+            backgroundColor: '#01FF70'
         });
         win.loadURL("http://localhost:8080");
         win.webContents.openDevTools();
@@ -20,6 +21,7 @@ const createWindow: () => void = () => {
             width: 765,
             height: 1020,
             show: false,
+            backgroundColor: '#01FF70'
         });
         win.loadURL(`file://${dirName}/../renderer/index.html`);
     }
@@ -32,7 +34,6 @@ const createWindow: () => void = () => {
         win.show();
         win.focus();
     });
-
 };
 
 ipcMain.on('main-register', (event: Event, arg: any) => {

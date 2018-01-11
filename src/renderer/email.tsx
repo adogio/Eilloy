@@ -8,6 +8,7 @@ import Create from './create';
 import { imapStrToDisplay } from '../func/common';
 import mailer from '../func/mailer';
 
+import IRelease from '../interfaces/release';
 import IUser from '../interfaces/user';
 import IWarning from '../interfaces/warning';
 
@@ -16,6 +17,7 @@ export interface IProps {
     location: any;
     user: IUser;
     warning: (warning: IWarning) => void;
+    release: (release: IRelease) => void;
     match: {
         params: {
             box: string;
@@ -124,25 +126,32 @@ export default class Menu extends React.Component<IProps, IState> {
         this.props.warning({
             info: '确认回复邮件? 您可以确认: ',
             button: '发送',
+            process: true,
             onClick: () => {
-                let b = new mailer({
-                    host: this.props.user.host,
-                    port: 465,
-                    secure: true,
-                    auth: {
-                        user: this.props.user.user,
-                        pass: this.props.user.password,
-                    },
-                });
-                b.send({
-                    from: `"👻" <${this.props.user.user}>`,
-                    to: this.state.mail.from,
-                    subject: `RE: ${this.state.mail.subject}`,
-                    html: this.state.content,
-                    priority: this.state.mail.priority,
-                }).then((data) => {
-                    console.log(data);
-                });
+                // let b = new mailer({
+                //     host: this.props.user.host,
+                //     port: 465,
+                //     secure: true,
+                //     auth: {
+                //         user: this.props.user.user,
+                //         pass: this.props.user.password,
+                //     },
+                // });
+                // b.send({
+                //     from: `"${this.props.user.nickName}" <${this.props.user.user}>`,
+                //     to: this.state.mail.from,
+                //     subject: `RE: ${this.state.mail.subject}`,
+                //     html: this.state.content,
+                //     priority: this.state.mail.priority,
+                // }).then((data) => {
+                // console.log(data);
+                setTimeout(() => {
+                    this.props.release({
+                        info: '发送成功',
+                        icon: 'hourglass-end',
+                    });
+                }, 1500);
+                // });
             },
             more: [{
                 icon: 'paper-plane',

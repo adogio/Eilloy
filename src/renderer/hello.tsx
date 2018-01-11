@@ -73,13 +73,7 @@ class Component extends React.Component<IProps, IState> {
                 info: `您正在尝试打开外部链接。如果您不信任发件人，打开外部链接往往意味着危险！`,
                 button: '继续',
                 onClick: () => {
-                    // shell.openExternal(url);
-                    setTimeout(() => {
-                        this.relaseWarning({
-                            info: 'test',
-                            icon: 'question',
-                        });
-                    }, 1000);
+                    shell.openExternal(url);
                 },
                 more: [{
                     icon: 'info-circle',
@@ -98,11 +92,17 @@ class Component extends React.Component<IProps, IState> {
                 button={this.state.warning.button}
                 more={this.state.warning.more}
                 onClick={() => {
-                    this.setState({
-                        displayRelease: true,
-                        displayWarning: false,
-                        loadRelease: true,
-                    });
+                    if (this.state.warning.process) {
+                        this.setState({
+                            displayRelease: true,
+                            displayWarning: false,
+                            loadRelease: true,
+                        });
+                    } else {
+                        this.setState({
+                            displayWarning: false,
+                        });
+                    }
                     this.state.warning.onClick();
                 }}
                 disable={this.state.warning.disable}

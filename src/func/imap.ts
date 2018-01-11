@@ -104,7 +104,7 @@ class ImapConfiger {
                                     }
                                 });
                             });
-                            msg.once('attributes', (attrs: Imap.ImapMessageAttributes) => {
+                            msg.once('attributes', (attrs: any) => {
                                 singleEmail.uid = attrs.uid;
                                 singleEmail.attrDate = attrs.date;
                                 singleEmail.flags = attrs.flags;
@@ -217,7 +217,7 @@ class ImapConfiger {
                                             }
                                         });
                                     });
-                                    msg.once('attributes', (attrs: Imap.ImapMessageAttributes) => {
+                                    msg.once('attributes', (attrs: any) => {
                                         singleEmail.uid = attrs.uid;
                                         singleEmail.attrDate = attrs.date;
                                         singleEmail.flags = attrs.flags;
@@ -394,7 +394,7 @@ class ImapConfiger {
                                 }
                             });
                         });
-                        msg.once('attributes', (attrs: Imap.ImapMessageAttributes) => {
+                        msg.once('attributes', (attrs: any) => {
                             singleEmail.uid = attrs.uid;
                             singleEmail.attrDate = attrs.date;
                             singleEmail.flags = attrs.flags;

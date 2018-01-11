@@ -8,8 +8,8 @@ export default interface IEmail {
     to?: string;
     cc?: string;
     bcc?: string;
-    date?: Date;
-    attrDate?: Date;
+    date?: string;
+    attrDate?: string;
     messageId?: string;
     returnPath?: {
         html: string;

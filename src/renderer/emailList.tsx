@@ -2,6 +2,8 @@ import * as React from 'react';
 import IEmail from '../interfaces/email';
 import IUser from '../interfaces/user';
 
+import { imapStrToDisplay } from '../func/common';
+
 export interface IProps {
     mails: IEmail[];
     user: IUser;
@@ -86,7 +88,7 @@ export default class Component extends React.Component<IProps, {}> {
                 {this.isMeTo(value.to)}
             </div>
             <div className="date">
-                {value.date}
+                {imapStrToDisplay(value.date)}
             </div>
             <hr />
         </div>);

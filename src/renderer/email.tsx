@@ -5,6 +5,7 @@ import IBox from '../interfaces/box';
 import IEmail from '../interfaces/email';
 import Create from './create';
 
+import { imapStrToDisplay } from '../func/common';
 import mailer from '../func/mailer';
 
 import IUser from '../interfaces/user';
@@ -171,7 +172,7 @@ export default class Menu extends React.Component<IProps, IState> {
                 {mail.to}
                 </div>
                 <div>
-                    {mail.date}
+                    {imapStrToDisplay(mail.date)}
                 </div>
                 <button
                     className="moreinfo-button"

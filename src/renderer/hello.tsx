@@ -1,15 +1,17 @@
 import { ipcRenderer, shell } from 'electron';
 import * as React from "react";
 import { Route } from 'react-router-dom';
+
 import Email from './email';
 import FullCreate from './fullCreate';
 import Menu from "./menu";
+import Relase from './release';
 import Warning from './warning';
 import Welcome from './welcome';
 
+import IRelease from '../interfaces/release';
 import IUser from '../interfaces/user';
 import IWarning from '../interfaces/warning';
-
 
 import './flow.sass';
 
@@ -19,7 +21,10 @@ export interface IProps {
 
 export interface IState {
     displayWarning: boolean;
+    displayRelease: boolean;
+    loadRelease: boolean;
     warning: IWarning;
+    release: IRelease;
 }
 
 const renderMergedProps: any = (component, ...rest) => {
@@ -44,6 +49,7 @@ class Component extends React.Component<IProps, IState> {
     public constructor(props: IProps) {
         super(props);
         this.startWarning = this.startWarning.bind(this);
+        this.relaseWarning = this.relaseWarning.bind(this);
         this.user = {
             host: 'smtp.mail.com',
             user: 'eilloytest@mail.com',
@@ -52,7 +58,10 @@ class Component extends React.Component<IProps, IState> {
         };
         this.state = {
             displayWarning: false,
+            displayRelease: false,
+            loadRelease: false,
             warning: {},
+            release: {},
         };
     }
 
@@ -60,20 +69,17 @@ class Component extends React.Component<IProps, IState> {
         ipcRenderer.send('main-register', 'main');
         ipcRenderer.removeAllListeners('blocked-open');
         ipcRenderer.on('blocked-open', (event: Event, url: string) => {
-            this.setState({
-                displayWarning: true,
-                warning: {
-                    info: `您正在尝试打开外部链接。如果您不信任发件人，打开外部链接往往意味着危险！`,
-                    button: '继续',
-                    onClick: () => {
-                        shell.openExternal(url);
-                    },
-                    more: [{
-                        icon: 'info-circle',
-                        info: '这个链接指向哪里？',
-                        value: url,
-                    }],
+            this.startWarning({
+                info: `您正在尝试打开外部链接。如果您不信任发件人，打开外部链接往往意味着危险！`,
+                button: '继续',
+                onClick: () => {
+                    // shell.openExternal(url);
                 },
+                more: [{
+                    icon: 'info-circle',
+                    info: '这个链接指向哪里？',
+                    value: url,
+                }],
             });
         });
     }
@@ -85,36 +91,58 @@ class Component extends React.Component<IProps, IState> {
                 info={this.state.warning.info}
                 button={this.state.warning.button}
                 more={this.state.warning.more}
-                onClick={this.state.warning.onClick}
+                onClick={() => {
+                    this.setState({
+                        displayRelease: true,
+                        displayWarning: false,
+                        loadRelease: true,
+                    });
+                    this.state.warning.onClick();
+                }}
                 disable={this.state.warning.disable}
                 onCancel={() => this.setState({
                     displayWarning: false,
                     // display
                 })}
             />
-            <div className={"entire" + (this.state.displayWarning ? " disable" : " enable")}>
+            <Relase
+                icon={this.state.release.info}
+                info={this.state.release.info}
+                display={this.state.displayRelease}
+                loading={this.state.loadRelease}
+                release={() => {
+                    this.setState({
+                        displayRelease: false,
+                    });
+                }}
+            />
+            <div className={"entire" + ((this.state.displayWarning || this.state.displayRelease) ? " disable" : " enable")}>
                 <PropsRoute
                     path="/"
                     exact={true}
                     warning={this.startWarning}
+                    release={this.relaseWarning}
                     user={this.user}
                     component={Menu} />
                 <PropsRoute
                     path="/create"
                     exact={true}
                     warning={this.startWarning}
+                    release={this.relaseWarning}
                     user={this.user}
                     component={FullCreate} />
                 <PropsRoute
                     path="/email/:box/:mail"
                     exact={true}
                     warning={this.startWarning}
+                    release={this.relaseWarning}
                     user={this.user}
                     component={Email} />
                 <PropsRoute
                     path="/welcome"
                     exact={true}
                     warning={this.startWarning}
+                    release={this.relaseWarning}
                     user={this.user}
                     component={Welcome} />
             </div>
@@ -125,6 +153,13 @@ class Component extends React.Component<IProps, IState> {
         this.setState({
             displayWarning: true,
             warning,
+        });
+    }
+
+    public relaseWarning(release: IRelease) {
+        this.setState({
+            loadRelease: true,
+            release,
         });
     }
 }

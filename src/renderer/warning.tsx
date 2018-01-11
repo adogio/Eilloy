@@ -18,7 +18,6 @@ export default class Component extends React.Component<IProps, {}> {
 
     public constructor(props: IProps) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
         this.mapMore = this.mapMore.bind(this);
     }
 
@@ -33,7 +32,7 @@ export default class Component extends React.Component<IProps, {}> {
                     <button
                         disabled={this.props.disable}
                         className={'btn'}
-                        onClick={this.handleClick}>
+                        onClick={this.props.onClick}>
                         {this.props.button}
                     </button>
                 </div>
@@ -45,11 +44,6 @@ export default class Component extends React.Component<IProps, {}> {
                     </button>
                 </div>
             </div>);
-    }
-
-    public handleClick() {
-        this.props.onClick();
-        this.props.onCancel();
     }
 
     public mapMore(value: { icon: string, info: string, value: string }, index: number) {

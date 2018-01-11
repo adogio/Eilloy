@@ -22,7 +22,7 @@ export default interface IEmail {
     };
     flags?: string[];
     received?: string[];
-    priority?: string;
+    priority?: 'high' | 'normal' | 'low';
     antiSpam?: string;
     sensitivity?: string;
     content?: string;

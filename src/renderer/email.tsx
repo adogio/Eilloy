@@ -5,9 +5,16 @@ import IBox from '../interfaces/box';
 import IEmail from '../interfaces/email';
 import Create from './create';
 
+import mailer from '../func/mailer';
+
+import IUser from '../interfaces/user';
+import IWarning from '../interfaces/warning';
+
 export interface IProps {
     history: any;
     location: any;
+    user: IUser;
+    warning: (warning: IWarning) => void;
     match: {
         params: {
             box: string;
@@ -20,6 +27,7 @@ export interface IState {
     mail: IEmail;
     more: boolean;
     create: boolean;
+    content: string;
 }
 
 export default class Menu extends React.Component<IProps, IState> {
@@ -28,10 +36,13 @@ export default class Menu extends React.Component<IProps, IState> {
         super(props);
         this.toWelcome = this.toWelcome.bind(this);
         this.renderMail = this.renderMail.bind(this);
+        this.sendEmail = this.sendEmail.bind(this);
+        this.onEditorChange = this.onEditorChange.bind(this);
         this.state = {
             mail: void 0,
             more: false,
             create: false,
+            content: '',
         };
     }
 
@@ -39,7 +50,7 @@ export default class Menu extends React.Component<IProps, IState> {
         Storage.get('list', {}, (err: Error, data: IBox[]) => {
             let mails: IEmail[] = data[parseInt(this.props.match.params.box, 10)].mails;
             for (let j of mails) {
-                if (j.queue === parseInt(this.props.match.params.mail, 10)) {
+                if (j.uid === parseInt(this.props.match.params.mail, 10)) {
                     console.log(j);
                     this.setState({
                         mail: j,
@@ -96,12 +107,54 @@ export default class Menu extends React.Component<IProps, IState> {
                 </div>
                 <div className={`under-create ${this.state.create ? "create" : "uncreate"}`}>
                     <Create
-                        onChange={() => console.log('test')}
-                        onInputChange={() => console.log('test')}
+                        onChange={this.onEditorChange}
+                        more={[{
+                            icon: 'paper-plane',
+                            onClick: this.sendEmail,
+                            size: 1,
+                        }]}
                     />
                 </div>
             </div>
         </div>);
+    }
+
+    protected sendEmail() {
+        this.props.warning({
+            info: '确认回复邮件? 您可以确认: ',
+            button: '发送',
+            onClick: () => {
+                let b = new mailer({
+                    host: this.props.user.host,
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: this.props.user.user,
+                        pass: this.props.user.password,
+                    },
+                });
+                b.send({
+                    from: `"👻" <${this.props.user.user}>`,
+                    to: this.state.mail.from,
+                    subject: `RE: ${this.state.mail.subject}`,
+                    html: this.state.content,
+                    priority: this.state.mail.priority,
+                }).then((data) => {
+                    console.log(data);
+                });
+            },
+            more: [{
+                icon: 'paper-plane',
+                info: '我发送给谁?',
+                value: this.state.mail.from,
+            }],
+        });
+    }
+
+    protected onEditorChange(html: string) {
+        this.setState({
+            content: html,
+        });
     }
 
     protected renderMail() {

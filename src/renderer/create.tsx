@@ -5,7 +5,12 @@ import * as React from 'react';
 export interface IProps {
     full?: boolean;
     onChange: (html: string) => void;
-    onInputChange: (where: string, what: string) => void;
+    onInputChange?: (where: string, what: string) => void;
+    more?: Array<{
+        icon: string;
+        onClick: () => void;
+        size?: number;
+    }>;
 }
 
 export interface IState {
@@ -20,6 +25,7 @@ export default class Component extends React.Component<IProps, IState> {
         this.handleCc = this.handleCc.bind(this);
         this.handleSubject = this.handleSubject.bind(this);
         this.handleTo = this.handleTo.bind(this);
+        this.mapMore = this.mapMore.bind(this);
         this.state = {
             editorState: EditorState.createEmpty(),
         };
@@ -27,7 +33,7 @@ export default class Component extends React.Component<IProps, IState> {
 
     public render() {
         return (<div className="veryBottom padding-content">
-            <div className="targets">
+            {this.props.full ? <div className="targets">
                 <div>
                     <i className="fas fa-tree fa-fw" />
                 </div>
@@ -49,7 +55,7 @@ export default class Component extends React.Component<IProps, IState> {
                     placeholder="抄送"
                     onChange={this.handleCc}
                 />
-            </div>
+            </div> : void 0}
             <div className="editor">
                 <button onClick={() => {
                     this.editorBasic('BOLD');
@@ -71,13 +77,7 @@ export default class Component extends React.Component<IProps, IState> {
                 }}>
                     <i className="fas fa-code fa-fw" />
                 </button>
-                {!this.props.full && <button
-                    className="bigger"
-                    onClick={() => {
-                        this.editorBasic('CODE');
-                    }}>
-                    <i className="fas fa-paper-plane fa-fw" />
-                </button>}
+                {this.props.more ? this.props.more.map(this.mapMore) : void 0}
                 <div className="inner-editor">
                     <Editor
                         editorState={this.state.editorState}
@@ -86,6 +86,16 @@ export default class Component extends React.Component<IProps, IState> {
                 </div>
             </div>
         </div>);
+    }
+
+    protected mapMore(value: { icon: string, onClick: () => void, size?: number }, index: number) {
+        return (<button
+            className={value.size ? "bigger" : ""}
+            onClick={value.onClick}
+            key={index}
+        >
+            <i className="fas fa-paper-plane fa-fw" />
+        </button>);
     }
 
     protected editorBasic(inlineStyle: string) {

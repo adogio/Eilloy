@@ -48,6 +48,7 @@ export default class Menu extends React.Component<IProps, IState> {
         //     Storage.set('list', data, {}, (err: Error) => {
         //         if (err) { throw err; }
         //     });
+        //     // console.log(data);
         // });
         // b.search('Jan 1, 2018').then((data) => {
         //     // console.log(JSON.stringify(data));
@@ -55,7 +56,6 @@ export default class Menu extends React.Component<IProps, IState> {
         // });
 
         Storage.get('list', (err, data) => {
-            console.log(data);
             this.setState({
                 box: data,
             });
@@ -101,6 +101,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     alignRow={true} />
             </div>
             <div className="col-10 entire mainContent padding-content overflow">
+                {this.state.box[0] ? `文件夹: ${this.state.box[this.state.currentBox].name}` : '读取中'}
                 <MailList
                     mails={this.state.box[0] ? this.state.box[this.state.currentBox].mails : []}
                     user={this.props.user}

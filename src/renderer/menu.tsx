@@ -2,7 +2,6 @@ import * as Storage from 'electron-json-storage';
 import * as React from 'react';
 import Topper from '../components/topper';
 import imap from '../func/imap';
-import imapTest from '../func/imapTest.js';
 import IBox from '../interfaces/box';
 import IUser from '../interfaces/user';
 import MailList from './emailList';
@@ -26,6 +25,7 @@ export default class Menu extends React.Component<IProps, IState> {
         this.toWelcome = this.toWelcome.bind(this);
         this.readEmail = this.readEmail.bind(this);
         this.mappingBox = this.mappingBox.bind(this);
+        this.concatBox = this.concatBox.bind(this);
         this.state = {
             box: [],
             currentBox: 1,
@@ -56,6 +56,7 @@ export default class Menu extends React.Component<IProps, IState> {
         // });
 
         Storage.get('list', (err, data) => {
+            // console.log(data);
             this.setState({
                 box: data,
             });
@@ -97,7 +98,7 @@ export default class Menu extends React.Component<IProps, IState> {
                         {
                             text: "hr",
                         },
-                    ].concat(this.state.box.map(this.mappingBox))}
+                    ].concat(this.concatBox())}
                     alignRow={true} />
             </div>
             <div className="col-10 entire mainContent padding-content overflow">
@@ -112,11 +113,29 @@ export default class Menu extends React.Component<IProps, IState> {
         </div>);
     }
 
+    protected concatBox(): Array<{
+        icon: string;
+        onClick: () => void;
+        text: string;
+        important?: number;
+    }> {
+        if (this.state.box.length >= 0) {
+            return this.state.box.map(this.mappingBox);
+        } else {
+            return [];
+        }
+    }
+
     protected readEmail(mailId: number): void {
         this.props.history.replace(`/email/${this.state.currentBox}/${mailId}`);
     }
 
-    protected mappingBox(value: IBox, index: number): any {
+    protected mappingBox(value: IBox, index: number): {
+        icon: string;
+        onClick: () => void;
+        text: string;
+        important?: number;
+    } {
         let icon: string;
 
         switch (value.name) {

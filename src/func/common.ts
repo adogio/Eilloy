@@ -3,7 +3,6 @@ export const imapStrToDisplay: (dateStr: string) => string = (dateStr: string): 
 };
 
 export const dateToDisplay: (date: Date) => string = (date: Date) => {
-    console.log(date);
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();

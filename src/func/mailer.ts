@@ -1,3 +1,4 @@
+import * as Imap from 'imap';
 import * as mailer from 'nodemailer';
 
 interface IConfig {
@@ -61,6 +62,19 @@ class Mailer {
                 }
                 resolve(info);
             });
+        });
+    }
+
+    public sent() {
+        const b = new Imap({
+            user: 'eilloytest@mail.com',
+            password: 'R2pOD2E6sYttC0h',
+            host: 'imap.mail.com',
+            port: 993,
+            tls: true,
+            tlsOptions: {
+                rejectUnauthorized: false,
+            },
         });
     }
 }

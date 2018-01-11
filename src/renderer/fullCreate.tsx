@@ -4,6 +4,7 @@ import Create from './create';
 
 import mailer from '../func/mailer';
 
+import IRelease from '../interfaces/release';
 import IUser from '../interfaces/user';
 import IWarning from '../interfaces/warning';
 
@@ -12,6 +13,7 @@ export interface IProps {
     location: any;
     match: any;
     user: IUser;
+    release: (release: IRelease) => void;
     warning: (warning: IWarning) => void;
 }
 
@@ -90,24 +92,30 @@ export default class Component extends React.Component<IProps, IState> {
     }
 
     protected send() {
-        let b = new mailer({
-            host: this.props.user.host,
-            port: 465,
-            secure: true,
-            auth: {
-                user: this.props.user.user,
-                pass: this.props.user.password,
-            },
-        });
-        b.send({
-            from: `"👻" <${this.props.user.user}>`,
-            to: this.state.to,
-            subject: this.state.subject,
-            html: this.state.content,
-            priority: 'normal',
-        }).then((data) => {
-            console.log(data);
-        });
+        // let b = new mailer({
+        //     host: this.props.user.host,
+        //     port: 465,
+        //     secure: true,
+        //     auth: {
+        //         user: this.props.user.user,
+        //         pass: this.props.user.password,
+        //     },
+        // });
+        // b.send({
+        //     from: `"👻" <${this.props.user.user}>`,
+        //     to: this.state.to,
+        //     subject: this.state.subject,
+        //     html: this.state.content,
+        //     priority: 'normal',
+        // }).then((data) => {
+        //     console.log(data);
+        // });
+        setTimeout(() => {
+            this.props.release({
+                info: '邮件发送成功',
+                icon: 'paper-plane',
+            });
+        }, 1000);
     }
 
     protected onEditorChange(html: string) {

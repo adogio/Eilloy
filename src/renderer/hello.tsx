@@ -74,6 +74,12 @@ class Component extends React.Component<IProps, IState> {
                 button: '继续',
                 onClick: () => {
                     // shell.openExternal(url);
+                    setTimeout(() => {
+                        this.relaseWarning({
+                            info: 'test',
+                            icon: 'question',
+                        });
+                    }, 1000);
                 },
                 more: [{
                     icon: 'info-circle',
@@ -106,7 +112,7 @@ class Component extends React.Component<IProps, IState> {
                 })}
             />
             <Relase
-                icon={this.state.release.info}
+                icon={this.state.release.icon}
                 info={this.state.release.info}
                 display={this.state.displayRelease}
                 loading={this.state.loadRelease}
@@ -158,7 +164,7 @@ class Component extends React.Component<IProps, IState> {
 
     public relaseWarning(release: IRelease) {
         this.setState({
-            loadRelease: true,
+            loadRelease: false,
             release,
         });
     }

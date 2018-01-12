@@ -24,8 +24,8 @@ html
     background-color: $lime
 
 .mainContent
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-x: hidden
+    overflow-y: hidden
 
 .padding-content
     padding-top: 20px
@@ -107,17 +107,21 @@ html
     text-decoration: underline
 
 .very-middle
-    transition: 0.3s all ease
+    transition: 0.5s all ease
     position: fixed
     overflow: hidden
     z-index: 11
     left: 20%
     width: 60%
     height: 24%
-    background-color: $olive
     font-family: "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif
     &.enable
         top: 38%
+        &.yes
+            transition: 1s all ease
+            background-color: $trans
+        &.no
+            background-color: $navy
     &.disable
         top: -24%
     .inner
@@ -136,7 +140,7 @@ html
         background-color: $yellow
     button:active
         color: $white
-    .c1, .c2, .c3
+    .c1, .c2, .c3, .a1
         transition: 0.5s all ease
         position: absolute
     .c1
@@ -150,7 +154,7 @@ html
             left: 0
             top: 0
         &.disable
-            left: -25%
+            left: -75%
             top: 0
     .c2
         color: $white
@@ -167,7 +171,7 @@ html
             top: 0
         &.disable
             right: 0
-            top: -72%
+            top: -122%
     .c3
         height: 28%
         width: 100%
@@ -175,5 +179,53 @@ html
             bottom: 0
             left: 0
         &.disable
-            bottom: -28%
+            bottom: -78%
             left: 0
+    .a1
+        width: 100%
+        height: 100%
+        .a2, .a3
+            transition: 1s all ease
+            pointer-events: none
+            position: absolute
+            opacity: 0
+            &.enable
+                &.yes
+                    opacity: 1
+                    top: 30%
+                    left: 40%
+                    width: 10vh
+                    height: 10vh
+                &.no
+                    width: 100%
+                    height: 100%
+                    top: 0
+                    left: 0
+                    opacity: 0
+                    animation: none
+            &.diable
+                animation: none
+                opacity: 1
+                top: 30%
+                left: 40%
+                width: 10vh
+                height: 10vh
+        .a2
+            z-index: 1
+            &.yes
+                outline: 10px solid $lime
+                animation: loading-rotate 4s infinite
+            &.no
+                outline: 1px solid $trans
+        .a3
+            &.yes
+                outline: 10px solid $navy
+                animation: loading-rotate 2s infinite
+            &.no
+                outline: 0
+                width: 0
+                height: 0
+
+@keyframes loading-rotate
+    100% 
+        transform: rotate(360deg)

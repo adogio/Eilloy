@@ -58,8 +58,8 @@ export default class Component extends React.Component<IProps, {}> {
         }
 
         return (<div className={this.props.alignRow ? "rows" : "columns"} key={index}>
-            <button className={"navButton " + important} onClick={value.onClick}>
-                <i className={"fas fa-" + value.icon + " fa-fw"}></i>
+            <button className={`navButton ${important}`} onClick={value.onClick}>
+                <i className={`fas fa-${value.icon} fa-fw`}></i>
                 <div className="description">{value.text}</div>
             </button>
         </div>);

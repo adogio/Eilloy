@@ -1,18 +1,17 @@
 import { app, BrowserWindow, Event, ipcMain } from "electron";
+import debug from '../config/debug';
 
 let win: BrowserWindow;
 const dirName: string = __dirname;
-const env: string = "dev";
 let mainEvent: Event;
-// const env: string = "production";
 
 const createWindow: () => void = () => {
-    if (env === 'dev') {
+    if (debug.isDebug) {
         win = new BrowserWindow({
             width: 1200,
             height: 1020,
             show: false,
-            backgroundColor: '#01FF70'
+            backgroundColor: '#01FF70',
         });
         win.loadURL("http://localhost:8080");
         win.webContents.openDevTools();
@@ -21,9 +20,10 @@ const createWindow: () => void = () => {
             width: 765,
             height: 1020,
             show: false,
-            backgroundColor: '#01FF70'
+            backgroundColor: '#01FF70',
         });
         win.loadURL(`file://${dirName}/../renderer/index.html`);
+        win.webContents.openDevTools();
     }
     win.webContents.on('new-window', (event: Electron.Event, url: string) => {
         event.preventDefault();

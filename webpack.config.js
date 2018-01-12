@@ -16,7 +16,7 @@ let config = {
     },
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json", '.css', '.sass']
+        extensions: [".ts", ".tsx", ".js", ".json", ".css", ".sass"]
     },
     module: {
         rules: [
@@ -51,12 +51,9 @@ let config = {
             template: PUBLIC_DIR
         }),
         new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production')
-            }
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
         }),
-        new UglifyJSPlugin(),
-        new webpack.optimize.UglifyJsPlugin()
+        new UglifyJSPlugin()
     ]
 };
 

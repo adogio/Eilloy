@@ -1,10 +1,15 @@
 import * as Storage from 'electron-json-storage';
 import * as React from 'react';
+
 import Topper from '../components/topper';
-import imap from '../func/imap';
+
 import IBox from '../interfaces/box';
 import IUser from '../interfaces/user';
 import MailList from './emailList';
+
+import imap from '../func/imap';
+
+import logger from '../func/logger';
 
 export interface IProps {
     history: any;
@@ -33,27 +38,24 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        // const b = new imap(this.props.user);
+        const b = new imap(this.props.user);
         // b.searchAll('Jan 12, 2018').then((data) => {
-        //     // Storage.set('list', data, {}, (err: Error) => {
-        //     //     if (err) { throw err; }
-        //     // });
-        //     console.log(data);
+        //     Storage.set('list', data, {}, (err: Error) => {
+        //         if (err) { throw err; }
+        //     });
+        //     logger(data);
         //     // this.setState({
         //     //     box: data,
         //     // });
         // });
-        // b.search('Jan 1, 2018').then((data) => {
-        //     console.log(data);
-        // });
         Storage.get('list', {}, (err, data) => {
-            console.log(data);
+            logger(data);
             this.setState({
                 box: data,
             });
         });
 
-        // console.log(s);
+        // logger(s);
 
     }
 
@@ -64,7 +66,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     icon={[
                         {
                             icon: "angle-double-right",
-                            onClick: () => console.log('test'),
+                            onClick: () => logger('test'),
                             text: "队列",
                             important: 2,
                         },
@@ -78,12 +80,12 @@ export default class Menu extends React.Component<IProps, IState> {
                         },
                         {
                             icon: "sync",
-                            onClick: () => console.log('test'),
+                            onClick: () => logger('test'),
                             text: "刷新",
                         },
                         {
                             icon: "cog",
-                            onClick: () => console.log('test'),
+                            onClick: () => logger('test'),
                             text: "设置",
                         },
                         {
@@ -166,7 +168,7 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     protected toWelcome(): void {
-        console.log(this.props.history);
+        logger(this.props.history);
         this.props.history.replace('/welcome');
     }
 }

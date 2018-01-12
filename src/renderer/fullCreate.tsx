@@ -8,6 +8,8 @@ import IRelease from '../interfaces/release';
 import IUser from '../interfaces/user';
 import IWarning from '../interfaces/warning';
 
+import logger from '../func/logger';
+
 export interface IProps {
     history: any;
     location: any;
@@ -60,7 +62,7 @@ export default class Component extends React.Component<IProps, IState> {
                         },
                         {
                             icon: "paperclip",
-                            onClick: () => console.log('test'),
+                            onClick: () => logger('test'),
                             text: "附件",
                             important: 1,
                         },
@@ -93,10 +95,10 @@ export default class Component extends React.Component<IProps, IState> {
                     html: this.state.content,
                     priority: 'normal',
                 }).then((data) => {
-                    console.log(data);
+                    logger(data);
                     setTimeout(() => {
                         this.props.release({
-                            info: '邮件发送成功',
+                            info: `发送 "${this.state.subject}" 到 "${this.state.to}" 成功`,
                             icon: 'paper-plane',
                         });
                     }, 1500);
@@ -118,7 +120,6 @@ export default class Component extends React.Component<IProps, IState> {
     }
 
     protected onInputChange(where: string, what: string) {
-        console.log(where, what);
         switch (where) {
             case 'subject':
                 this.setState({
@@ -136,7 +137,7 @@ export default class Component extends React.Component<IProps, IState> {
                 });
                 break;
             default:
-                console.log(where, what);
+                logger(where, what);
         }
     }
 }

@@ -57,7 +57,7 @@ class Component extends React.Component<IProps, IState> {
             portImap: 993,
             user: 'eilloytest@mail.com',
             password: 'R2pOD2E6sYttC0h',
-            nickName: 'ttt',
+            nickName: '😺😸😹',
             tls: true,
             tlsOptions: {
                 rejectUnauthorized: false,

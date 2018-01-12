@@ -12,6 +12,8 @@ import IRelease from '../interfaces/release';
 import IUser from '../interfaces/user';
 import IWarning from '../interfaces/warning';
 
+import logger from '../func/logger';
+
 export interface IProps {
     history: any;
     location: any;
@@ -25,7 +27,6 @@ export interface IProps {
         };
     };
 }
-
 export interface IState {
     mail: IEmail;
     more: boolean;
@@ -54,7 +55,7 @@ export default class Menu extends React.Component<IProps, IState> {
             let mails: IEmail[] = data[parseInt(this.props.match.params.box, 10)].mails;
             for (let j of mails) {
                 if (j.uid === parseInt(this.props.match.params.mail, 10)) {
-                    console.log(j);
+                    logger(j);
                     this.setState({
                         mail: j,
                     });
@@ -71,7 +72,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     icon={[
                         {
                             icon: "arrow-circle-right",
-                            onClick: () => console.log('test'),
+                            onClick: () => logger('test'),
                             text: "继续",
                             important: 2,
                         },
@@ -136,13 +137,13 @@ export default class Menu extends React.Component<IProps, IState> {
                     html: this.state.content,
                     priority: this.state.mail.priority,
                 }).then((data) => {
-                    console.log(data);
+                    logger(data);
                     setTimeout(() => {
                         this.props.release({
-                            info: '发送成功',
-                            icon: 'hourglass-end',
+                            info: `发送 "RE: ${this.state.mail.subject}" 到 "${this.state.mail.from}" 成功`,
+                            icon: 'paper-plane',
                         });
-                    }, 3500);
+                    }, 1500);
                 });
             },
             more: [{
@@ -261,7 +262,7 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     protected toWelcome() {
-        console.log(this.props.history);
+        logger(this.props.history);
         this.props.history.replace('/welcome');
     }
 }

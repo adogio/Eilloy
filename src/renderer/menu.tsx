@@ -47,7 +47,7 @@ export default class Menu extends React.Component<IProps, IState> {
         //     console.log(data);
         // });
         Storage.get('list', {}, (err, data) => {
-            // console.log(data);
+            console.log(data);
             this.setState({
                 box: data,
             });

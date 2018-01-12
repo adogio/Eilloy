@@ -95,6 +95,9 @@ export default class Component extends React.Component<IProps, {}> {
     }
 
     protected isMeFrom(from: string): string {
+        if (!Boolean(from)) {
+            return '没有发件人';
+        }
         const fromArr: string[] = from.split(/<|>/);
         for (let i of fromArr) {
             if (i === this.props.user.user) {
@@ -105,6 +108,9 @@ export default class Component extends React.Component<IProps, {}> {
     }
 
     protected isMeTo(address: string): string {
+        if (!Boolean(address)) {
+            return '没有收件人';
+        }
         if (address === this.props.user.user) {
             return "Me";
         } else {

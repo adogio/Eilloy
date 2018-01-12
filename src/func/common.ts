@@ -1,5 +1,10 @@
 export const imapStrToDisplay: (dateStr: string) => string = (dateStr: string): string => {
-    return dateToDisplay(imapStrToDate(dateStr)) || dateStr.toString();
+    let re: string = dateToDisplay(imapStrToDate(dateStr));
+    if (typeof re === 'undefined') {
+        return '没有日期';
+    } else {
+        return re || dateStr.toString();
+    }
 };
 
 export const dateToDisplay: (date: Date) => string = (date: Date) => {
@@ -16,6 +21,9 @@ export const dateToDisplay: (date: Date) => string = (date: Date) => {
 };
 
 export const imapStrToDate: (dateStr: string) => Date = (dateStr: string): Date => {
+    if (typeof dateStr === 'undefined') {
+        return void 0;
+    }
     if (!Boolean(dateStr.split) || !Boolean(dateStr)) {
         return void 0;
     }

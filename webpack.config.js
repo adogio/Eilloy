@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-const BUILD_DIR = path.resolve(__dirname, 'dist', 'renderer');
+const BUILD_DIR = path.resolve(__dirname, 'app', 'renderer');
 const APP_DIR = path.resolve(__dirname, 'src', 'renderer');
 const PUBLIC_DIR = path.resolve(__dirname, 'public', 'template.html')
 

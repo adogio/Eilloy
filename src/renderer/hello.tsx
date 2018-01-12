@@ -58,11 +58,20 @@ class Component extends React.Component<IProps, IState> {
         };
         this.state = {
             displayWarning: false,
-            displayRelease: false,
-            loadRelease: false,
+            displayRelease: true,
+            loadRelease: true,
             warning: {},
-            release: {},
+            release: {
+                info: '123',
+                icon: 'clock',
+            },
         };
+
+        setTimeout(() => {
+            this.setState({
+                loadRelease: false,
+            });
+        }, 1500);
     }
 
     public componentDidMount() {

@@ -17,21 +17,17 @@ export default class Component extends React.Component<IProps, {}> {
     public render() {
         return (
             <div className={`very-middle ${this.props.display ? "enable" : "disable"}`} >
-                {this.props.loading ?
-                    "loading" :
-                    (<div className="inner">
-                        <div className="row" >
-                            <div className="c1 col-3" >
-                                <i className={`fas fa-${this.props.icon} fa-fw`} />
-                            </div>
-                            <div className="c2 col-9" >
-                                {this.props.info}
-                            </div>
-                        </div>
-                        <div className="c3" >
-                            <button onClick={this.props.release} >好的</button>
-                        </div>
-                    </div>)}
+                <div className="inner">
+                    <div className={`c1 ${this.props.loading ? "disable" : "enable"}`} >
+                        <i className={`fas fa-${this.props.icon} fa-fw`} />
+                    </div>
+                    <div className={`c2 ${this.props.loading ? "disable" : "enable"}`} >
+                        {this.props.info}
+                    </div>
+                    <div className={`c3 ${this.props.loading ? "disable" : "enable"}`} >
+                        <button onClick={this.props.release} >好的</button>
+                    </div>
+                </div>
             </div>);
     }
 }

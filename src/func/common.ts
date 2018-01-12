@@ -1,8 +1,11 @@
 export const imapStrToDisplay: (dateStr: string) => string = (dateStr: string): string => {
-    return dateToDisplay(imapStrToDate(dateStr));
+    return dateToDisplay(imapStrToDate(dateStr)) || dateStr.toString();
 };
 
 export const dateToDisplay: (date: Date) => string = (date: Date) => {
+    if (!Boolean(date)) {
+        return void 0;
+    }
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
@@ -13,6 +16,9 @@ export const dateToDisplay: (date: Date) => string = (date: Date) => {
 };
 
 export const imapStrToDate: (dateStr: string) => Date = (dateStr: string): Date => {
+    if (!Boolean(dateStr.split) || !Boolean(dateStr)) {
+        return void 0;
+    }
     const splited = dateStr.split(/T|Z|-|:|\./).map((value, index) => {
         return parseInt(value, 10);
     });

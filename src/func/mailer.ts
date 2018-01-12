@@ -94,7 +94,7 @@ class Mailer {
                 });
                 imap.on('ready', () => {
                     imap.append(message, {
-                        mailbox: 'test',
+                        mailbox: 'Sent',
                     }, (appendError: Error) => {
                         if (appendError) {
                             console.log(appendError);

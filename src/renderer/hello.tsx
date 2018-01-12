@@ -51,10 +51,17 @@ class Component extends React.Component<IProps, IState> {
         this.startWarning = this.startWarning.bind(this);
         this.relaseWarning = this.relaseWarning.bind(this);
         this.user = {
-            host: 'smtp.mail.com',
+            smtp: 'smtp.mail.com',
+            portSmtp: 465,
+            imap: 'imap.mail.com',
+            portImap: 993,
             user: 'eilloytest@mail.com',
             password: 'R2pOD2E6sYttC0h',
             nickName: 'ttt',
+            tls: true,
+            tlsOptions: {
+                rejectUnauthorized: false,
+            },
         };
         this.state = {
             displayWarning: false,

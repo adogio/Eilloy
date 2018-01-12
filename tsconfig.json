@@ -27,6 +27,7 @@
     "include": [
         "src/main/**/*",
         "src/func/**/*",
-        "src/interfaces/**/*"
+        "src/interfaces/**/*",
+        "src/config/**/*"
     ]
 }

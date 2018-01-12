@@ -8,11 +8,9 @@ import Iuser from '../interfaces/user';
 
 class ImapConfiger {
     private config: Config;
-    private nickName: string;
 
-    public constructor(userConfig: Iuser) {
+    public constructor(userConfig: Config) {
         this.config = userConfig;
-        this.nickName = userConfig.nickName;
     }
 
     public search(since: string) {
@@ -194,8 +192,12 @@ class ImapConfiger {
                                             singleEmail.sensitivity = header.get('sensitivity');
                                             singleEmail.date = header.get('date');
                                             singleEmail.subject = header.get('subject');
-                                            singleEmail.from = header.get('from').text;
-                                            singleEmail.to = header.get('to').text;
+                                            if (header.get('from')) {
+                                                singleEmail.from = header.get('from').text;
+                                            }
+                                            if (header.get('to')) {
+                                                singleEmail.to = header.get('to').text;
+                                            }
                                         });
                                         mailparser.once("data", (data: any) => {
                                             if (data.type === 'text') {

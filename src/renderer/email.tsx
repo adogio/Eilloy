@@ -128,30 +128,30 @@ export default class Menu extends React.Component<IProps, IState> {
             button: '发送',
             process: true,
             onClick: () => {
-                // let b = new mailer({
-                //     host: this.props.user.host,
-                //     port: 465,
-                //     secure: true,
-                //     auth: {
-                //         user: this.props.user.user,
-                //         pass: this.props.user.password,
-                //     },
-                // });
-                // b.send({
-                //     from: `"${this.props.user.nickName}" <${this.props.user.user}>`,
-                //     to: this.state.mail.from,
-                //     subject: `RE: ${this.state.mail.subject}`,
-                //     html: this.state.content,
-                //     priority: this.state.mail.priority,
-                // }).then((data) => {
-                // console.log(data);
-                setTimeout(() => {
-                    this.props.release({
-                        info: '发送成功',
-                        icon: 'hourglass-end',
-                    });
-                }, 1500);
-                // });
+                let b = new mailer({
+                    host: this.props.user.smtp,
+                    port: this.props.user.portSmtp,
+                    secure: true,
+                    auth: {
+                        user: this.props.user.user,
+                        pass: this.props.user.password,
+                    },
+                });
+                b.send({
+                    from: `"${this.props.user.nickName}" <${this.props.user.user}>`,
+                    to: this.state.mail.from,
+                    subject: `RE: ${this.state.mail.subject}`,
+                    html: this.state.content,
+                    priority: this.state.mail.priority,
+                }).then((data) => {
+                    console.log(data);
+                    setTimeout(() => {
+                        this.props.release({
+                            info: '发送成功',
+                            icon: 'hourglass-end',
+                        });
+                    }, 3500);
+                });
             },
             more: [{
                 icon: 'paper-plane',
@@ -223,7 +223,7 @@ export default class Menu extends React.Component<IProps, IState> {
                 </div>
                 <hr />
                 <div
-                    className="auto-margin"
+                    className="auto-margin email-content"
                     dangerouslySetInnerHTML={
                         { __html: mail.content }
                     }>

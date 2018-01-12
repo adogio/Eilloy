@@ -150,7 +150,7 @@ export default class Menu extends React.Component<IProps, IState> {
                         info: '发送成功',
                         icon: 'hourglass-end',
                     });
-                }, 500);
+                }, 1500);
                 // });
             },
             more: [{

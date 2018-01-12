@@ -107,7 +107,7 @@ html
     text-decoration: underline
 
 .very-middle
-    transition: 0.5s all ease
+    transition: 0.6s all ease
     position: fixed
     overflow: hidden
     z-index: 11
@@ -185,46 +185,32 @@ html
         width: 100%
         height: 100%
         .a2, .a3
-            transition: 1s all ease
+            transition: 1s all
             pointer-events: none
             position: absolute
-            opacity: 0
-            &.enable
-                &.yes
-                    opacity: 1
-                    top: 30%
-                    left: 40%
-                    width: 10vh
-                    height: 10vh
-                &.no
-                    width: 100%
-                    height: 100%
-                    top: 0
-                    left: 0
-                    opacity: 0
-                    animation: none
-            &.diable
-                animation: none
-                opacity: 1
-                top: 30%
-                left: 40%
+            top: 30%
+            left: 40%
+            &.yes
                 width: 10vh
                 height: 10vh
+                opacity: 1
+            &.no
+                top: 40%
+                left: 50%
+                animation: none
+                width: 0
+                height: 0
+                outline: 0
+                opacity: 0
         .a2
             z-index: 1
             &.yes
                 outline: 10px solid $lime
-                animation: loading-rotate 4s infinite
-            &.no
-                outline: 1px solid $trans
+                animation: loading-rotate 3s infinite    
         .a3
             &.yes
                 outline: 10px solid $navy
-                animation: loading-rotate 2s infinite
-            &.no
-                outline: 0
-                width: 0
-                height: 0
+                animation: loading-rotate 1.5s infinite                 
 
 @keyframes loading-rotate
     100% 

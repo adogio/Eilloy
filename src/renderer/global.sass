@@ -7,7 +7,7 @@ html
         margin: 0
 
 .entire
-    transition: 0.3s all ease
+    transition: 0.3s filter ease-in-out
     height: 100%
     margin: 0
     padding: 0
@@ -47,7 +47,7 @@ html
 
 .above-create
     @extend .overflow
-    transition: 0.3s all ease
+    transition: 0.3s height ease-in-out
     &.uncreate
         height: 100%
     &.create
@@ -55,7 +55,7 @@ html
 
 .under-create
     @extend .overflow
-    transition: 0.3s all ease
+    transition: 0.3s height ease-in-out
     &.uncreate
         height: 0%
     &.create
@@ -64,7 +64,7 @@ html
 .veryFront
     cursor: default
     user-select: none
-    transition: 0.3s all ease
+    transition: 0.3s top ease-in-out
     position: fixed
     left: 0px
     background-color: $navy
@@ -107,7 +107,7 @@ html
     text-decoration: underline
 
 .very-middle
-    transition: 0.6s all ease
+    transition: 0.6s all ease-in-out
     position: fixed
     overflow: hidden
     z-index: 11
@@ -118,7 +118,7 @@ html
     &.enable
         top: 38%
         &.yes
-            transition: 1s all ease
+            transition: 1s all ease-in-out
             background-color: $trans
         &.no
             background-color: $navy
@@ -128,7 +128,7 @@ html
         height: 100%
         position: relative
     button
-        transition: 0.3s all ease
+        transition: 0.3s all ease-in-out
         cursor: pointer
         background-color: $lime
         border: 0
@@ -141,7 +141,7 @@ html
     button:active
         color: $white
     .c1, .c2, .c3, .a1
-        transition: 0.5s all ease
+        transition: 0.5s all ease-in-out
         position: absolute
     .c1
         color: $white

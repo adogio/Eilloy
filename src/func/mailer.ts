@@ -1,5 +1,8 @@
 import * as Imap from 'imap';
 import * as mailer from 'nodemailer';
+
+import IUser from '../interfaces/user';
+
 declare const require: any;
 const MailComposer = require('nodemailer/lib/mail-composer');
 
@@ -34,9 +37,19 @@ interface IMail {
 class Mailer {
 
     private transporter: any;
+    private config: IUser;
 
-    public constructor(config: IConfig) {
-        this.transporter = mailer.createTransport(config);
+    public constructor(config: IUser) {
+        this.config = config;
+        this.transporter = mailer.createTransport({
+            host: config.smtp,
+            port: config.portSmtp,
+            secure: true,
+            auth: {
+                user: config.user,
+                pass: config.password,
+            },
+        });
     }
 
     public send(config: IMail) {
@@ -78,14 +91,12 @@ class Mailer {
                     throw err;
                 }
                 const imap = new Imap({
-                    user: 'eilloytest@mail.com',
-                    password: 'R2pOD2E6sYttC0h',
-                    host: 'imap.mail.com',
-                    port: 993,
-                    tls: true,
-                    tlsOptions: {
-                        rejectUnauthorized: false,
-                    },
+                    user: this.config.user,
+                    password: this.config.password,
+                    host: this.config.imap,
+                    port: this.config.portImap,
+                    tls: this.config.tls,
+                    tlsOptions: this.config.tlsOptions,
                 });
                 imap.on('error', (imapErr: Error) => {
                     console.log(imapErr);

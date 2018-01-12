@@ -33,27 +33,20 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        const b = new imap({
-            user: this.props.user.user,
-            password: this.props.user.password,
-            host: this.props.user.imap,
-            port: this.props.user.portImap,
-            tls: this.props.user.tls,
-            tlsOptions: this.props.user.tlsOptions,
-        });
-        b.searchAll('Jan 12, 2018').then((data) => {
-            // Storage.set('list', data, {}, (err: Error) => {
-            //     if (err) { throw err; }
-            // });
-            console.log(data);
-            // this.setState({
-            //     box: data,
-            // });
-        });
+        // const b = new imap(this.props.user);
+        // b.searchAll('Jan 12, 2018').then((data) => {
+        //     // Storage.set('list', data, {}, (err: Error) => {
+        //     //     if (err) { throw err; }
+        //     // });
+        //     console.log(data);
+        //     // this.setState({
+        //     //     box: data,
+        //     // });
+        // });
         // b.search('Jan 1, 2018').then((data) => {
         //     console.log(data);
         // });
-        Storage.get('list', (err, data) => {
+        Storage.get('list', {}, (err, data) => {
             // console.log(data);
             this.setState({
                 box: data,

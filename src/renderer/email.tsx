@@ -128,15 +128,7 @@ export default class Menu extends React.Component<IProps, IState> {
             button: '发送',
             process: true,
             onClick: () => {
-                let b = new mailer({
-                    host: this.props.user.smtp,
-                    port: this.props.user.portSmtp,
-                    secure: true,
-                    auth: {
-                        user: this.props.user.user,
-                        pass: this.props.user.password,
-                    },
-                });
+                let b = new mailer(this.props.user);
                 b.send({
                     from: `"${this.props.user.nickName}" <${this.props.user.user}>`,
                     to: this.state.mail.from,

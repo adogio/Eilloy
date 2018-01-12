@@ -2,15 +2,26 @@ import * as fs from 'fs';
 import * as Imap from 'imap';
 import { Config } from 'imap';
 import { MailParser } from 'mailparser';
+
 import Ibox from '../interfaces/box';
 import Iemail from '../interfaces/email';
-import Iuser from '../interfaces/user';
+import IUser from '../interfaces/user';
 
 class ImapConfiger {
+    private user: IUser;
     private config: Config;
 
-    public constructor(userConfig: Config) {
-        this.config = userConfig;
+    public constructor(userConfig: IUser) {
+        this.user = userConfig;
+        this.config = {
+            user: userConfig.user,
+            password: userConfig.password,
+            host: userConfig.imap,
+            port: userConfig.portImap,
+            tls: userConfig.tls,
+            tlsOptions: userConfig.tlsOptions,
+            keepalive: false,
+        };
     }
 
     public search(since: string) {

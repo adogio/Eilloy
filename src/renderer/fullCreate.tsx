@@ -46,19 +46,7 @@ export default class Component extends React.Component<IProps, IState> {
                     icon={[
                         {
                             icon: "paper-plane",
-                            onClick: () => {
-                                this.props.warning({
-                                    info: '确认发送邮件? 您可以确认: ',
-                                    disable: (this.state.to.length === 0),
-                                    button: '发送',
-                                    onClick: this.send,
-                                    more: [{
-                                        icon: 'paper-plane',
-                                        info: '我发送给谁?',
-                                        value: (this.state.to.length > 0) ? this.state.to : '没有收件人',
-                                    }],
-                                });
-                            },
+                            onClick: this.send,
                             text: "发送",
                             important: 2,
                         },
@@ -92,30 +80,35 @@ export default class Component extends React.Component<IProps, IState> {
     }
 
     protected send() {
-        // let b = new mailer({
-        //     host: this.props.user.host,
-        //     port: 465,
-        //     secure: true,
-        //     auth: {
-        //         user: this.props.user.user,
-        //         pass: this.props.user.password,
-        //     },
-        // });
-        // b.send({
-        //     from: `"👻" <${this.props.user.user}>`,
-        //     to: this.state.to,
-        //     subject: this.state.subject,
-        //     html: this.state.content,
-        //     priority: 'normal',
-        // }).then((data) => {
-        //     console.log(data);
-        // });
-        setTimeout(() => {
-            this.props.release({
-                info: '邮件发送成功',
+        this.props.warning({
+            info: '确认发送邮件? 您可以确认: ',
+            disable: (this.state.to.length === 0),
+            button: '发送',
+            onClick: () => {
+                let b = new mailer(this.props.user);
+                b.send({
+                    from: `"${this.props.user.nickName}" <${this.props.user.user}>`,
+                    to: this.state.to,
+                    subject: this.state.subject,
+                    html: this.state.content,
+                    priority: 'normal',
+                }).then((data) => {
+                    console.log(data);
+                    setTimeout(() => {
+                        this.props.release({
+                            info: '邮件发送成功',
+                            icon: 'paper-plane',
+                        });
+                    }, 1500);
+                });
+            },
+            process: true,
+            more: [{
                 icon: 'paper-plane',
-            });
-        }, 1000);
+                info: '我发送给谁?',
+                value: (this.state.to.length > 0) ? this.state.to : '没有收件人',
+            }],
+        });
     }
 
     protected onEditorChange(html: string) {

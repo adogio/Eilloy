@@ -1,6 +1,11 @@
-export const imapStrToDisplay: (dateStr: string) => string = (dateStr: string): string => {
-    let re: string = dateToDisplay(imapStrToDate(dateStr));
-    if (typeof re === 'undefined') {
+export const imapStrToDisplay: (dateStr: any) => string = (dateStr: any): string => {
+    let re: string;
+    if (Boolean(dateStr.getFullYear)) {
+        re = dateToDisplay(imapStrToDate(JSON.parse(JSON.stringify(dateStr))));
+    } else {
+        re = dateToDisplay(imapStrToDate(dateStr));
+    }
+    if (!Boolean(dateStr.toString)) {
         return '没有日期';
     } else {
         return re || dateStr.toString();
@@ -17,7 +22,7 @@ export const dateToDisplay: (date: Date) => string = (date: Date) => {
     const hour = date.getHours();
     const minute = date.getMinutes();
     const second = date.getSeconds();
-    return `${year}年${month}月${day}日, ${hour}:${minute}:${second}`;
+    return `${year}年${month}月${day}日, ${hour}:${minute}:${second}, 星期${date.getDay()}`;
 };
 
 export const imapStrToDate: (dateStr: string) => Date = (dateStr: string): Date => {

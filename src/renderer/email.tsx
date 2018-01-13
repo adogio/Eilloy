@@ -6,6 +6,7 @@ import IEmail from '../interfaces/email';
 import Create from './create';
 
 import { imapStrToDisplay } from '../func/common';
+import imap from '../func/imap';
 import mailer from '../func/mailer';
 
 import IRelease from '../interfaces/release';
@@ -51,8 +52,21 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
+        const b = new imap(this.props.user);
+        b.fetchMail(this.props.match.params.box, parseInt(this.props.match.params.mail, 10)).then((data) => {
+            console.log(data);
+            this.setState({
+                mail: data,
+            });
+        });
         Storage.get('list', {}, (err: Error, data: IBox[]) => {
-            let mails: IEmail[] = data[parseInt(this.props.match.params.box, 10)].mails;
+            let mails: IEmail[];
+            for (let i of data) {
+                if (i.gName === this.props.match.params.box) {
+                    mails = i.mails;
+                }
+            }
+            console.log(mails);
             for (let j of mails) {
                 if (j.uid === parseInt(this.props.match.params.mail, 10)) {
                     logger('email get mail', j);

@@ -7,6 +7,8 @@ import Ibox from '../interfaces/box';
 import Iemail from '../interfaces/email';
 import IUser from '../interfaces/user';
 
+import logger from '../func/logger';
+
 class ImapConfiger {
     private user: IUser;
     private config: Config;
@@ -138,6 +140,85 @@ class ImapConfiger {
         });
     }
 
+    public fetchMail(boxName: string, uid: number) {
+        return new Promise((resolve: (result: any) => void, reject: (error: any) => void) => {
+            let result: Iemail;
+            const imap: Imap = new Imap(this.config);
+            this.setupImap(imap, () => {
+                resolve(result);
+            }, () => {
+                imap.openBox(boxName, (openErr: Error, box: any) => {
+                    const fetch = imap.fetch(uid, {
+                        bodies: [``],
+                    });
+                    fetch.on('message', (msg: Imap.ImapMessage, seq: number) => {
+                        const mailparser: MailParser = new MailParser();
+                        result = {
+                            queue: seq,
+                            attachment: [],
+                        };
+                        msg.once('body', (stream: NodeJS.ReadableStream, info: Imap.ImapMessageBodyInfo) => {
+                            stream.pipe(mailparser);
+                            result.size = info.size;
+                            result.which = info.which;
+                            mailparser.once("headers", (header: any) => {
+                                result.received = header.get('received');
+                                result.returnPath = header.get('return-path');
+                                result.messageId = header.get('message-id');
+                                result.cc = header.get('cc');
+                                result.bcc = header.get('bcc');
+                                result.mime = header.get('mime-version');
+                                result.priority = header.get('priority');
+                                result.antiSpam = header.get('x-gmx-antispam');
+                                result.transferEncoding = header.get('content-transfer-encoding');
+                                result.sensitivity = header.get('sensitivity');
+                                result.date = header.get('date');
+                                result.subject = header.get('subject');
+                                if (header.get('from')) {
+                                    result.from = header.get('from').text;
+                                }
+                                if (header.get('to')) {
+                                    result.to = header.get('to').text;
+                                }
+                            });
+                            mailparser.on('data', (data: any) => {
+                                if (data.type === 'text') {
+                                    if (Boolean(data.html)) {
+                                        result.content = data.html.toString();
+                                    }
+                                } else if (data.type === 'attachment') {
+                                    result.attachment.push({
+                                        fileName: data.filename,
+                                        checksum: data.checksum,
+                                        contentType: data.contentType,
+                                        size: data.size,
+                                    });
+                                    // data.content.pipe(fs.createWriteStream(data.filename)); // 保存附件到当前目录下
+                                    data.release();
+                                } else {
+                                    logger('receive data other than text or attachment', data);
+                                }
+                            });
+                        });
+                        msg.once('attributes', (attrs: any) => {
+                            result.uid = attrs.uid;
+                            result.attrDate = attrs.date;
+                            result.flags = attrs.flags;
+                        });
+                    });
+                    fetch.once('error', (mailparserErr: Error) => {
+                        logger('imap fetch body error', 'Fetch Error: ' + mailparserErr);
+                        reject(mailparserErr);
+                        throw mailparserErr;
+                    });
+                    fetch.once('end', () => {
+                        imap.end();
+                    });
+                });
+            });
+        });
+    }
+
     public searchAll(since: string) {
         return new Promise((resolve: (result: any) => void, reject: (error: any) => void) => {
             let reBox: Ibox[] = [];
@@ -212,7 +293,7 @@ class ImapConfiger {
                                                 singleEmail.to = header.get('to').text;
                                             }
                                         });
-                                        mailparser.once("data", (data: any) => {
+                                        mailparser.on("data", (data: any) => {
                                             if (data.type === 'text') {
                                                 let html = "";
                                                 if (Boolean(data.html)) {

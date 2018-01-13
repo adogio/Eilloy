@@ -120,7 +120,7 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     protected readEmail(mailId: number): void {
-        this.props.history.replace(`/email/${this.state.currentBox}/${mailId}`);
+        this.props.history.replace(`/email/${this.state.box[this.state.currentBox].name}/${mailId}`);
     }
 
     protected mappingBox(value: IBox, index: number): {

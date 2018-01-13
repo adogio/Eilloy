@@ -1,7 +1,7 @@
 import debug from '../config/debug';
 
-export default (thing: any, ...things: any[]) => {
+export default (where: string, thing: any, ...things: any[]) => {
     if (debug.isDebug) {
-        console.log(thing, ...things);
+        console.log(`[${where}] `, thing, ...things);
     }
 };

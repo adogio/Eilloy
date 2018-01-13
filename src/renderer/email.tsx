@@ -55,7 +55,7 @@ export default class Menu extends React.Component<IProps, IState> {
             let mails: IEmail[] = data[parseInt(this.props.match.params.box, 10)].mails;
             for (let j of mails) {
                 if (j.uid === parseInt(this.props.match.params.mail, 10)) {
-                    logger(j);
+                    logger('email get mail', j);
                     this.setState({
                         mail: j,
                     });
@@ -72,7 +72,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     icon={[
                         {
                             icon: "arrow-circle-right",
-                            onClick: () => logger('test'),
+                            onClick: () => logger('temp', 'test'),
                             text: "继续",
                             important: 2,
                         },
@@ -137,7 +137,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     html: this.state.content,
                     priority: this.state.mail.priority,
                 }).then((data) => {
-                    logger(data);
+                    logger('reply', data);
                     setTimeout(() => {
                         this.props.release({
                             info: `发送 "RE: ${this.state.mail.subject}" 到 "${this.state.mail.from}" 成功`,
@@ -262,7 +262,7 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     protected toWelcome() {
-        logger(this.props.history);
+        logger('email towelcome', this.props.history);
         this.props.history.replace('/welcome');
     }
 }

@@ -64,9 +64,9 @@ class ImapConfiger {
                             throw searchErr;
                         }
                         const f = imap.fetch(results, {
-                            bodies: '',
-                            // markSeen: true // 取消注释变为已读
-                        }); // 抓取邮件（默认情况下邮件服务器的邮件是未读状态）
+                            bodies: ['HEADER'],
+                            struct: true,
+                        });
                         f.on('message', (msg: Imap.ImapMessage, seq: number) => {
                             const mailparser: MailParser = new MailParser();
                             const singleEmail: Iemail = {
@@ -178,7 +178,8 @@ class ImapConfiger {
                                     return;
                                 }
                                 const f = thread.fetch(results, {
-                                    bodies: '',
+                                    bodies: ['HEADER'],
+                                    struct: true,
                                 });
                                 f.on('message', (msg: Imap.ImapMessage, seq: number) => {
                                     const mailparser: MailParser = new MailParser();
@@ -191,6 +192,7 @@ class ImapConfiger {
                                         singleEmail.size = info.size;
                                         singleEmail.which = info.which;
                                         mailparser.once("headers", (header: any) => {
+                                            console.log(header);
                                             singleEmail.received = header.get('received');
                                             singleEmail.returnPath = header.get('return-path');
                                             singleEmail.messageId = header.get('message-id');

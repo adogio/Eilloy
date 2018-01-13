@@ -62,7 +62,7 @@ export default class Component extends React.Component<IProps, IState> {
                         },
                         {
                             icon: "paperclip",
-                            onClick: () => logger('test'),
+                            onClick: () => logger('temp', 'test'),
                             text: "附件",
                             important: 1,
                         },
@@ -95,7 +95,7 @@ export default class Component extends React.Component<IProps, IState> {
                     html: this.state.content,
                     priority: 'normal',
                 }).then((data) => {
-                    logger(data);
+                    logger('full create send', data);
                     setTimeout(() => {
                         this.props.release({
                             info: `发送 "${this.state.subject}" 到 "${this.state.to}" 成功`,
@@ -137,7 +137,7 @@ export default class Component extends React.Component<IProps, IState> {
                 });
                 break;
             default:
-                logger(where, what);
+                logger('content default', where, what);
         }
     }
 }

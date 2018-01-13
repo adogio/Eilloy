@@ -72,7 +72,7 @@ class Mailer {
         return new Promise((resolve: (data: any) => void, reject: (err: Error) => void) => {
             this.transporter.sendMail(config, (error: Error, info: any) => {
                 if (error) {
-                    logger(error);
+                    logger('sent-mail', error);
                     reject(error);
                     throw error;
                 }
@@ -88,7 +88,7 @@ class Mailer {
             let composer = new MailComposer(config);
             composer.compile().build((err: any, message: any) => {
                 if (err) {
-                    logger(err);
+                    logger('put mail in sent box', err);
                     reject(err);
                     throw err;
                 }
@@ -101,7 +101,7 @@ class Mailer {
                     tlsOptions: this.config.tlsOptions,
                 });
                 imap.on('error', (imapErr: Error) => {
-                    logger(imapErr);
+                    logger('imap error', imapErr);
                     reject(imapErr);
                     throw imapErr;
                 });
@@ -110,7 +110,7 @@ class Mailer {
                         mailbox: 'Sent',
                     }, (appendError: Error) => {
                         if (appendError) {
-                            logger(appendError);
+                            logger('append error', appendError);
                             reject(appendError);
                             throw appendError;
                         }

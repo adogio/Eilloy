@@ -38,18 +38,18 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        const b = new imap(this.props.user);
-        // b.searchAll('Jan 12, 2018').then((data) => {
+        // const b = new imap(this.props.user);
+        // b.searchAll('Dec 1, 2017').then((data) => {
         //     Storage.set('list', data, {}, (err: Error) => {
         //         if (err) { throw err; }
         //     });
-        //     logger(data);
+        //     logger('menu mount search all', data);
         //     // this.setState({
         //     //     box: data,
         //     // });
         // });
         Storage.get('list', {}, (err, data) => {
-            logger(data);
+            logger('Storage-get', data);
             this.setState({
                 box: data,
             });
@@ -66,7 +66,7 @@ export default class Menu extends React.Component<IProps, IState> {
                     icon={[
                         {
                             icon: "angle-double-right",
-                            onClick: () => logger('test'),
+                            onClick: () => logger('temp', 'test'),
                             text: "队列",
                             important: 2,
                         },
@@ -80,12 +80,12 @@ export default class Menu extends React.Component<IProps, IState> {
                         },
                         {
                             icon: "sync",
-                            onClick: () => logger('test'),
+                            onClick: () => logger('temp', 'test'),
                             text: "刷新",
                         },
                         {
                             icon: "cog",
-                            onClick: () => logger('test'),
+                            onClick: () => logger('temp', 'test'),
                             text: "设置",
                         },
                         {
@@ -168,7 +168,7 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     protected toWelcome(): void {
-        logger(this.props.history);
+        logger('menu to welcome', this.props.history);
         this.props.history.replace('/welcome');
     }
 }

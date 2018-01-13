@@ -7,11 +7,12 @@ endif
 Eilloy: page
 
 electron:
-	tsc
 ifeq ($(UNAME), win32)
-	.\node_modules\.bin\electron .
+	.\node_modules\.bin\webpack --config webpack.main.js
+	.\node_modules\.bin\electron .\app
 else
-	./node_modules/.bin/electron .
+	./node_modules/.bin/webpack --config webpack.main.js
+	./node_modules/.bin/electron ./app
 endif
 
 page:
@@ -22,13 +23,14 @@ else
 endif
 
 build:
-	tsc
 ifeq ($(UNAME), win32)
 	.\node_modules\.bin\webpack --config webpack.config.js
-	.\node_modules\.bin\electron-builder
+	.\node_modules\.bin\webpack --config webpack.main.js
+	cd app ; ..\node_modules\.bin\electron-builder
 else
 	./node_modules/.bin/webpack --config webpack.config.js
-	./node_modules/.bin/electron-builder
+	./node_modules/.bin/webpack --config webpack.main.js
+	cd app ; ../node_modules/.bin/electron-builder
 endif
 
 tt:

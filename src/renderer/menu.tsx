@@ -3,11 +3,14 @@ import * as React from 'react';
 
 import Topper from '../components/topper';
 
-import IBox from '../interfaces/box';
-import IUser from '../interfaces/user';
 import MailList from './emailList';
 
 import imap from '../func/imap';
+
+import IBox from '../interfaces/box';
+import IRelease from '../interfaces/release';
+import IUser from '../interfaces/user';
+import IWarning from '../interfaces/warning';
 
 import logger from '../func/logger';
 
@@ -16,6 +19,9 @@ export interface IProps {
     location: any;
     match: any;
     user: IUser;
+    warning: (warning: IWarning) => void;
+    release: (release: IRelease) => void;
+    load: () => void;
 }
 
 export interface IState {

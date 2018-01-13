@@ -1,0 +1,35 @@
+@import '../func/color.sass'
+
+.loading
+    transition: 0.5s all ease-in-out
+    position: fixed
+    z-index: 11
+    left: 45vw
+    top: 45vh
+    .outer
+        transition: 0.5s all ease-in-out
+        position: absolute
+        .front, .back
+            transition: 0.8s all ease-in-out
+            pointer-events: none
+            position: absolute
+            width: 10vh
+            height: 10vh
+            opacity: 1
+            &.disable
+                outline: 0px solid $lime
+        .front
+            z-index: 1
+            animation: loading-rotate 3s infinite
+            &.enable
+                outline: 10px solid $lime
+        .back
+            animation: loading-rotate 1.5s infinite
+            &.enable
+                outline: 10px solid $navy
+                
+
+
+@keyframes loading-rotate
+    100% 
+        transform: rotate(360deg)

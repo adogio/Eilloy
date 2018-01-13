@@ -21,6 +21,7 @@ export interface IProps {
     user: IUser;
     warning: (warning: IWarning) => void;
     release: (release: IRelease) => void;
+    load: () => void;
     match: {
         params: {
             box: string;
@@ -52,12 +53,13 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
+        this.props.load();
         const b = new imap(this.props.user);
         b.fetchMail(this.props.match.params.box, parseInt(this.props.match.params.mail, 10)).then((data) => {
-            console.log(data);
             this.setState({
                 mail: data,
             });
+            this.props.load();
         });
         Storage.get('list', {}, (err: Error, data: IBox[]) => {
             let mails: IEmail[];
@@ -66,7 +68,6 @@ export default class Menu extends React.Component<IProps, IState> {
                     mails = i.mails;
                 }
             }
-            console.log(mails);
             for (let j of mails) {
                 if (j.uid === parseInt(this.props.match.params.mail, 10)) {
                     logger('email get mail', j);

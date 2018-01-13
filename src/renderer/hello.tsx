@@ -2,12 +2,14 @@ import { ipcRenderer, shell } from 'electron';
 import * as React from "react";
 import { Route } from 'react-router-dom';
 
+import Loading from '../components/loading';
 import Email from './email';
 import FullCreate from './fullCreate';
 import Menu from "./menu";
 import Relase from './release';
 import Warning from './warning';
 import Welcome from './welcome';
+
 
 import IRelease from '../interfaces/release';
 import IUser from '../interfaces/user';
@@ -23,6 +25,7 @@ export interface IState {
     displayWarning: boolean;
     displayRelease: boolean;
     loadRelease: boolean;
+    loading: boolean;
     warning: IWarning;
     release: IRelease;
 }
@@ -50,6 +53,7 @@ class Component extends React.Component<IProps, IState> {
         super(props);
         this.startWarning = this.startWarning.bind(this);
         this.relaseWarning = this.relaseWarning.bind(this);
+        this.load = this.load.bind(this);
         this.user = {
             smtp: 'smtp.mail.com',
             portSmtp: 465,
@@ -67,6 +71,7 @@ class Component extends React.Component<IProps, IState> {
             displayWarning: false,
             displayRelease: false,
             loadRelease: false,
+            loading: false,
             warning: {},
             release: {
                 info: '123',
@@ -132,12 +137,16 @@ class Component extends React.Component<IProps, IState> {
                     });
                 }}
             />
+            <Loading
+                loading={this.state.loading}
+            />
             <div className={"entire" + ((this.state.displayWarning || this.state.displayRelease) ? " disable" : " enable")}>
                 <PropsRoute
                     path="/"
                     exact={true}
                     warning={this.startWarning}
                     release={this.relaseWarning}
+                    load={this.load}
                     user={this.user}
                     component={Menu} />
                 <PropsRoute
@@ -145,6 +154,7 @@ class Component extends React.Component<IProps, IState> {
                     exact={true}
                     warning={this.startWarning}
                     release={this.relaseWarning}
+                    load={this.load}
                     user={this.user}
                     component={FullCreate} />
                 <PropsRoute
@@ -152,6 +162,7 @@ class Component extends React.Component<IProps, IState> {
                     exact={true}
                     warning={this.startWarning}
                     release={this.relaseWarning}
+                    load={this.load}
                     user={this.user}
                     component={Email} />
                 <PropsRoute
@@ -159,6 +170,7 @@ class Component extends React.Component<IProps, IState> {
                     exact={true}
                     warning={this.startWarning}
                     release={this.relaseWarning}
+                    load={this.load}
                     user={this.user}
                     component={Welcome} />
             </div>
@@ -178,6 +190,13 @@ class Component extends React.Component<IProps, IState> {
             release,
         });
     }
+
+    public load() {
+        this.setState({
+            loading: !this.state.loading,
+        });
+    }
+
 }
 
 export default Component;

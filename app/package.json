@@ -1,0 +1,33 @@
+{
+    "name": "eilloy",
+    "version": "1.0.0",
+    "description": ":space_invader: A sample email client for us.",
+    "main": "main/index.js",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/adogio/Eilloy.git"
+    },
+    "keywords": [
+        "email"
+    ],
+    "author": "WMXPY",
+    "license": "SEE LICENSE IN LICENSE",
+    "bugs": {
+        "url": "https://github.com/adogio/Eilloy/issues"
+    },
+    "build": {
+        "productName": "eilloy",
+        "appId": "com.eilloy",
+        "files": [
+            "/",
+            "package.json",
+            "renderer/index.html"
+        ],
+        "mac": {
+            "category": "efficiency"
+        },
+        "win": {}
+    },
+    "homepage": "https://github.com/adogio/Eilloy#readme"
+}

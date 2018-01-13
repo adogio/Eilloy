@@ -20,20 +20,6 @@
   "bugs": {
     "url": "https://github.com/adogio/Eilloy/issues"
   },
-  "build": {
-    "productName": "eilloy",
-    "appId": "com.eilloy",
-    "files": [
-      "dist/",
-      "node_modules/electron/",
-      "package.json",
-      "dist/renderer/index.html"
-    ],
-    "mac": {
-      "category": "efficiency"
-    },
-    "win": {}
-  },
   "homepage": "https://github.com/adogio/Eilloy#readme",
   "devDependencies": {
     "@types/chai": "^4.0.10",

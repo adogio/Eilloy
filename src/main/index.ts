@@ -2,7 +2,6 @@ import { app, BrowserWindow, Event, ipcMain } from "electron";
 import debug from '../config/debug';
 
 let win: BrowserWindow;
-const dirName: string = __dirname;
 let mainEvent: Event;
 
 const createWindow: () => void = () => {
@@ -22,7 +21,7 @@ const createWindow: () => void = () => {
             show: false,
             backgroundColor: '#01FF70',
         });
-        win.loadURL(`file://${dirName}/../renderer/index.html`);
+        win.loadURL(`file://${__dirname}/../renderer/index.html`);
         win.webContents.openDevTools();
     }
     win.webContents.on('new-window', (event: Electron.Event, url: string) => {

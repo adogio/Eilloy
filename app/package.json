@@ -2,7 +2,7 @@
     "name": "eilloy",
     "version": "1.0.0",
     "description": ":space_invader: A sample email client for us.",
-    "main": "main/index.js",
+    "main": "main/bundle.js",
     "private": true,
     "repository": {
         "type": "git",
@@ -20,10 +20,14 @@
         "productName": "eilloy",
         "appId": "com.eilloy",
         "files": [
-            "/",
+            "main",
+            "renderer",
             "package.json",
             "renderer/index.html"
         ],
+        "directories": {
+            "buildResources": "/../"
+        },
         "mac": {
             "category": "efficiency"
         },

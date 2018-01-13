@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const BUILD_DIR = path.resolve(__dirname, 'app', 'main');
 const APP_DIR = path.resolve(__dirname, 'src', 'main');
@@ -11,6 +10,9 @@ let config = {
     output: {
         filename: "bundle.js",
         path: BUILD_DIR
+    },
+    node: {
+        __dirname: false
     },
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
@@ -33,8 +35,7 @@ let config = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
-        }),
-        new UglifyJSPlugin()
+        })
     ]
 };
 

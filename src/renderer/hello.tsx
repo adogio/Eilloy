@@ -166,7 +166,7 @@ class Component extends React.Component<IProps, IState> {
                     user={this.user}
                     component={FullCreate} />
                 <PropsRoute
-                    path="/email/:box/:mail"
+                    path="/email/:box/:mail/:re"
                     exact={true}
                     warning={this.startWarning}
                     release={this.relaseWarning}

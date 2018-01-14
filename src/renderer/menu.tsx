@@ -17,7 +17,11 @@ import logger from '../func/logger';
 export interface IProps {
     history: any;
     location: any;
-    match: any;
+    match: {
+        params: {
+            box: string;
+        };
+    };
     user: IUser;
     warning: (warning: IWarning) => void;
     release: (release: IRelease) => void;
@@ -42,7 +46,7 @@ export default class Menu extends React.Component<IProps, IState> {
         this.saveMailToStorage = this.saveMailToStorage.bind(this);
         this.state = {
             box: [],
-            currentBox: 1,
+            currentBox: parseInt(this.props.match.params.box, 10),
         };
     }
 
@@ -98,6 +102,7 @@ export default class Menu extends React.Component<IProps, IState> {
                 </div>
                 <div className="padding-content" >
                     <MailList
+                        box={this.props.match.params.box}
                         mails={this.state.box[0] ? this.state.box[this.state.currentBox].mails : []}
                         user={this.props.user}
                         readEmail={this.readEmail}
@@ -153,7 +158,7 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     protected readEmail(mailId: number): void {
-        this.props.history.replace(`/email/${this.state.box[this.state.currentBox].name}/${mailId}`);
+        this.props.history.replace(`/email/${this.state.box[this.state.currentBox].name}/${mailId}/${this.props.match.params.box}`);
     }
 
     protected mappingBox(value: IBox, index: number): {
@@ -165,6 +170,7 @@ export default class Menu extends React.Component<IProps, IState> {
         return {
             icon: this.getIcon(value.name),
             onClick: () => {
+                this.props.history.replace(`/list/${index}`);
                 this.setState({
                     currentBox: index,
                 });

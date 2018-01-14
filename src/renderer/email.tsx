@@ -26,6 +26,7 @@ export interface IProps {
         params: {
             box: string;
             mail: string;
+            re: string;
         };
     };
 }
@@ -95,7 +96,7 @@ export default class Menu extends React.Component<IProps, IState> {
                         {
                             icon: "list",
                             onClick: () => {
-                                this.props.history.replace('/');
+                                this.props.history.replace(`/list/${this.props.match.params.re}`);
                             },
                             text: "总览",
                             important: 1,

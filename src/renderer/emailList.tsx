@@ -9,6 +9,7 @@ import { imapStrToDisplay } from '../func/common';
 export interface IProps {
     mails: IEmail[];
     user: IUser;
+    box: string;
     readEmail: (emailId: number) => void;
 }
 

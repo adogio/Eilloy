@@ -21,7 +21,7 @@ export interface IProps {
     user: IUser;
     warning: (warning: IWarning) => void;
     release: (release: IRelease) => void;
-    load: () => void;
+    load: (fade?: boolean) => void;
 }
 
 export interface IState {
@@ -37,32 +37,17 @@ export default class Menu extends React.Component<IProps, IState> {
         this.readEmail = this.readEmail.bind(this);
         this.mappingBox = this.mappingBox.bind(this);
         this.concatBox = this.concatBox.bind(this);
+        this.loadMailFromImap = this.loadMailFromImap.bind(this);
+        this.loadMailFromStorage = this.loadMailFromStorage.bind(this);
+        this.saveMailToStorage = this.saveMailToStorage.bind(this);
         this.state = {
             box: [],
             currentBox: 1,
         };
     }
 
-    public componentDidMount() {
-        // const b = new imap(this.props.user);
-        // b.searchAll('Dec 1, 2017').then((data) => {
-        //     Storage.set('list', data, {}, (err: Error) => {
-        //         if (err) { throw err; }
-        //     });
-        //     logger('menu mount search all', data);
-        //     // this.setState({
-        //     //     box: data,
-        //     // });
-        // });
-        Storage.get('list', {}, (err, data) => {
-            logger('Storage-get', data);
-            this.setState({
-                box: data,
-            });
-        });
-
-        // logger(s);
-
+    public componentWillMount() {
+        this.loadMailFromStorage();
     }
 
     public render() {
@@ -86,7 +71,7 @@ export default class Menu extends React.Component<IProps, IState> {
                         },
                         {
                             icon: "sync",
-                            onClick: () => logger('temp', 'test'),
+                            onClick: this.loadMailFromImap,
                             text: "刷新",
                         },
                         {
@@ -100,16 +85,58 @@ export default class Menu extends React.Component<IProps, IState> {
                     ].concat(this.concatBox())}
                     alignRow={true} />
             </div>
-            <div className="col-10 entire mainContent padding-content overflow">
-                {this.state.box[0] ? `文件夹: ${this.state.box[this.state.currentBox].name}` : '读取中'}
-                <MailList
-                    mails={this.state.box[0] ? this.state.box[this.state.currentBox].mails : []}
-                    user={this.props.user}
-                    readEmail={this.readEmail}
-                />
-                <i className="fas fa-check-square fa-fw" />
+            <div className="col-10 entire mainContent overflow">
+                <div className="menu-topper padding-content" >
+                    {this.state.box[0] ?
+                        <span>文件夹:
+                            &nbsp;
+                            <i className={`fa fa-${this.getIcon(this.state.box[this.state.currentBox].name)} fa-fw`} />
+                            &nbsp;
+                            {this.state.box[this.state.currentBox].name}
+                        </span> :
+                        '读取中'}
+                </div>
+                <div className="padding-content" >
+                    <MailList
+                        mails={this.state.box[0] ? this.state.box[this.state.currentBox].mails : []}
+                        user={this.props.user}
+                        readEmail={this.readEmail}
+                    />
+                    <i className="fas fa-check-square fa-fw" />
+                </div>
             </div>
         </div>);
+    }
+
+    protected loadMailFromImap() {
+        this.props.load(true);
+        const b = new imap(this.props.user);
+        b.searchAll('Dec 1, 2017').then((data: IBox[]) => {
+            this.saveMailToStorage(data);
+            logger('loadMailFromImap', data);
+            this.setState({
+                box: data,
+            });
+            this.props.load();
+        });
+    }
+
+    protected saveMailToStorage(data: IBox[]) {
+        Storage.set('list', data, {}, (err: Error) => {
+            logger('saveMailToStorage');
+            if (err) { throw err; }
+        });
+    }
+
+    protected loadMailFromStorage() {
+        this.props.load();
+        Storage.get('list', {}, (err, data: IBox[]) => {
+            logger('loadMailFromStorage', data);
+            this.props.load();
+            this.setState({
+                box: data,
+            });
+        });
     }
 
     protected concatBox(): Array<{
@@ -135,9 +162,20 @@ export default class Menu extends React.Component<IProps, IState> {
         text: string;
         important?: number;
     } {
-        let icon: string;
+        return {
+            icon: this.getIcon(value.name),
+            onClick: () => {
+                this.setState({
+                    currentBox: index,
+                });
+            },
+            text: value.name,
+        };
+    }
 
-        switch (value.name) {
+    protected getIcon(content: string): string {
+        let icon: string;
+        switch (content) {
             case 'inbox':
             case 'Inbox':
             case 'INBOX':
@@ -162,15 +200,7 @@ export default class Menu extends React.Component<IProps, IState> {
             default:
                 icon = 'archive';
         }
-        return {
-            icon,
-            onClick: () => {
-                this.setState({
-                    currentBox: index,
-                });
-            },
-            text: value.name,
-        };
+        return icon;
     }
 
     protected toWelcome(): void {

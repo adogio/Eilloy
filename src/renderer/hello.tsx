@@ -26,6 +26,7 @@ export interface IState {
     displayRelease: boolean;
     loadRelease: boolean;
     loading: boolean;
+    fade: boolean;
     warning: IWarning;
     release: IRelease;
 }
@@ -62,6 +63,7 @@ class Component extends React.Component<IProps, IState> {
             user: 'eilloytest@mail.com',
             password: 'R2pOD2E6sYttC0h',
             nickName: '😺😸😹',
+            sign: '<p>😺😸😹</p><p>eilloytest@mail.com</p>',
             tls: true,
             tlsOptions: {
                 rejectUnauthorized: false,
@@ -72,6 +74,7 @@ class Component extends React.Component<IProps, IState> {
             displayRelease: false,
             loadRelease: false,
             loading: false,
+            fade: false,
             warning: {},
             release: {
                 info: '123',
@@ -116,6 +119,7 @@ class Component extends React.Component<IProps, IState> {
                     } else {
                         this.setState({
                             displayWarning: false,
+                            fade: false,
                         });
                     }
                     this.state.warning.onClick();
@@ -123,6 +127,7 @@ class Component extends React.Component<IProps, IState> {
                 disable={this.state.warning.disable}
                 onCancel={() => this.setState({
                     displayWarning: false,
+                    fade: false,
                     // display
                 })}
             />
@@ -134,13 +139,14 @@ class Component extends React.Component<IProps, IState> {
                 release={() => {
                     this.setState({
                         displayRelease: false,
+                        fade: false,
                     });
                 }}
             />
             <Loading
                 loading={this.state.loading}
             />
-            <div className={"entire" + ((this.state.displayWarning || this.state.displayRelease) ? " disable" : " enable")}>
+            <div className={"entire" + (this.state.fade ? " disable" : " enable")}>
                 <PropsRoute
                     path="/"
                     exact={true}
@@ -180,6 +186,7 @@ class Component extends React.Component<IProps, IState> {
     public startWarning(warning: IWarning) {
         this.setState({
             displayWarning: true,
+            fade: true,
             warning,
         });
     }
@@ -187,16 +194,30 @@ class Component extends React.Component<IProps, IState> {
     public relaseWarning(release: IRelease) {
         this.setState({
             loadRelease: false,
+            fade: false,
             release,
         });
     }
 
-    public load() {
-        this.setState({
-            loading: !this.state.loading,
-        });
+    public load(fade?: boolean) {
+        if (this.state.loading) {
+            this.setState({
+                fade: false,
+                loading: false,
+            });
+            return;
+        }
+        if (fade) {
+            this.setState({
+                fade: true,
+                loading: !this.state.loading,
+            });
+        } else {
+            this.setState({
+                loading: !this.state.loading,
+            });
+        }
     }
-
 }
 
 export default Component;

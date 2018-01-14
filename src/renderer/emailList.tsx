@@ -2,6 +2,8 @@ import * as React from 'react';
 import IEmail from '../interfaces/email';
 import IUser from '../interfaces/user';
 
+import Flier from '../components/flier';
+
 import { imapStrToDisplay } from '../func/common';
 
 export interface IProps {
@@ -17,6 +19,7 @@ export default class Component extends React.Component<IProps, {}> {
         this.renderSingle = this.renderSingle.bind(this);
         this.isMeTo = this.isMeTo.bind(this);
         this.isMeFrom = this.isMeFrom.bind(this);
+        this.trimFrom = this.trimFrom.bind(this);
     }
 
     public render() {
@@ -68,30 +71,47 @@ export default class Component extends React.Component<IProps, {}> {
             this.props.readEmail(value.uid);
         };
 
-        return (<div key={index}>
-            <div
-                className={"subject" + flags}
-                onClick={read}>
-                {exclaColor}
-                &nbsp;
+        return (<div key={index + value.from}>
+            <div className="email-list-outer" >
+                <div className="email-list-left" >
+                    <div className="email-icon" >
+                        <Flier text={this.trimFrom(value.from)} />
+                    </div>
+                </div>
+                <div className="email-list-right" >
+                    <div
+                        className={"subject" + flags}
+                        onClick={read}>
+                        {exclaColor}
+                        &nbsp;
                 {value.subject}
-            </div>
-            <div className="fromOrTo">
-                {this.isMeFrom(value.from)}
-                &nbsp;
+                    </div>
+                    <div className="fromOrTo">
+                        {this.isMeFrom(value.from)}
+                        &nbsp;
                 <a title={value.from}>
-                    <span className="smaller">(INFO)</span>
-                </a>
-                &nbsp;
+                            <span className="smaller">(INFO)</span>
+                        </a>
+                        &nbsp;
                 <i className="fas fa-arrow-circle-right fa-fw" />
-                &nbsp;
+                        &nbsp;
                 {this.isMeTo(value.to)}
-            </div>
-            <div className="date">
-                {imapStrToDisplay(value.date)}
+                    </div>
+                    <div className="date">
+                        {imapStrToDisplay(value.date)}
+                    </div>
+                </div>
             </div>
             <hr />
         </div>);
+    }
+
+    protected trimFrom(from: string): string {
+        if (!Boolean(from)) {
+            return '未知';
+        }
+        const fromArr: string[] = from.split(/<|>/);
+        return fromArr[0].trim();
     }
 
     protected isMeFrom(from: string): string {

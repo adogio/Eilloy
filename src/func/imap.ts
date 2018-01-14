@@ -147,7 +147,7 @@ class ImapConfiger {
             }, () => {
                 imap.openBox(boxName, (openErr: Error, box: any) => {
                     const fetch = imap.fetch(uid, {
-                        bodies: [``],
+                        bodies: '',
                     });
                     fetch.on('message', (msg: Imap.ImapMessage, seq: number) => {
                         const mailparser: MailParser = new MailParser();

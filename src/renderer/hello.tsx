@@ -1,6 +1,6 @@
 import { ipcRenderer, shell } from 'electron';
 import * as React from "react";
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 
 import Loading from '../components/loading';
 import Email from './email';
@@ -9,7 +9,6 @@ import Menu from "./menu";
 import Relase from './release';
 import Warning from './warning';
 import Welcome from './welcome';
-
 
 import IRelease from '../interfaces/release';
 import IUser from '../interfaces/user';
@@ -147,8 +146,11 @@ class Component extends React.Component<IProps, IState> {
                 loading={this.state.loading}
             />
             <div className={"entire" + (this.state.fade ? " disable" : " enable")}>
+                <Route>
+                    <Redirect to="/list/1" />
+                </Route>
                 <PropsRoute
-                    path="/"
+                    path="/list/:box"
                     exact={true}
                     warning={this.startWarning}
                     release={this.relaseWarning}

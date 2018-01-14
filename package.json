@@ -60,6 +60,7 @@
     "nodemailer": "^4.4.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "sparidae": "^1.2.3"
   }
 }

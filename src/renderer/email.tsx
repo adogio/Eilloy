@@ -56,6 +56,7 @@ export default class Menu extends React.Component<IProps, IState> {
         this.props.load();
         const b = new imap(this.props.user);
         b.fetchMail(this.props.match.params.box, parseInt(this.props.match.params.mail, 10)).then((data) => {
+            logger('email fetch mail', data);
             this.setState({
                 mail: data,
             });
@@ -70,7 +71,7 @@ export default class Menu extends React.Component<IProps, IState> {
             }
             for (let j of mails) {
                 if (j.uid === parseInt(this.props.match.params.mail, 10)) {
-                    logger('email get mail', j);
+                    logger('email get mail from storage', j);
                     this.setState({
                         mail: j,
                     });

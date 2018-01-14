@@ -21,7 +21,7 @@ export interface IProps {
     user: IUser;
     warning: (warning: IWarning) => void;
     release: (release: IRelease) => void;
-    load: () => void;
+    load: (fade?: boolean) => void;
     match: {
         params: {
             box: string;

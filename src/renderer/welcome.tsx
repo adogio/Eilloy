@@ -7,7 +7,7 @@ import IWarning from '../interfaces/warning';
 export interface IProps {
     warning: (warning: IWarning) => void;
     release: (release: IRelease) => void;
-    load: () => void;
+    load: (fade?: boolean) => void;
 }
 
 export default class Component extends React.Component<{}, {}> {

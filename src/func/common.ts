@@ -1,15 +1,14 @@
 export const imapStrToDisplay: (dateStr: any) => string = (dateStr: any): string => {
     let re: string;
+    if (!Boolean(dateStr)) {
+        return '没有日期';
+    }
     if (Boolean(dateStr.getFullYear)) {
         re = dateToDisplay(imapStrToDate(JSON.parse(JSON.stringify(dateStr))));
     } else {
         re = dateToDisplay(imapStrToDate(dateStr));
     }
-    if (!Boolean(dateStr.toString)) {
-        return '没有日期';
-    } else {
-        return re || dateStr.toString();
-    }
+    return re || dateStr.toString();
 };
 
 export const dateToDisplay: (date: Date) => string = (date: Date) => {

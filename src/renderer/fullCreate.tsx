@@ -17,7 +17,7 @@ export interface IProps {
     user: IUser;
     release: (release: IRelease) => void;
     warning: (warning: IWarning) => void;
-    load: () => void;
+    load: (fade?: boolean) => void;
 }
 
 export interface IState {

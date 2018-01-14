@@ -39,11 +39,9 @@ class ImapConfiger {
             });
             imap.on('end', () => {
                 resolve(reBox);
-                // console.log('关闭邮箱');
             });
             imap.once('ready', () => {
                 this.openInbox(imap, (inboxError: Error, box: any) => {
-                    // console.log("打开邮箱");
                     reBox.name = box.name;
                     reBox.flags = box.flags;
                     reBox.readOnly = box.readOnly;
@@ -273,7 +271,6 @@ class ImapConfiger {
                                         singleEmail.size = info.size;
                                         singleEmail.which = info.which;
                                         mailparser.once("headers", (header: any) => {
-                                            console.log(header);
                                             singleEmail.received = header.get('received');
                                             singleEmail.returnPath = header.get('return-path');
                                             singleEmail.messageId = header.get('message-id');

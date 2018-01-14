@@ -230,8 +230,8 @@ class ImapConfiger {
                             resolve(reBox);
                         }
                     }, () => {
-                        current++;
                         thread.openBox(i.gName, (inboxError: Error, mailbox: any) => {
+                            i.id = current++;
                             i.name = mailbox.name;
                             i.flags = mailbox.flags;
                             i.readOnly = mailbox.readOnly;

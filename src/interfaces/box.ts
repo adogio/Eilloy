@@ -1,6 +1,7 @@
 import Iemail from './email';
 
 export default interface Ibox {
+    id?: number;
     name?: string;
     gName?: string;
     flags?: string[];

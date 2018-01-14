@@ -1,6 +1,7 @@
 import * as Storage from 'electron-json-storage';
 import * as React from 'react';
 
+import { IBtn } from '../components/topper';
 import Topper from '../components/topper';
 
 import MailList from './emailList';
@@ -51,6 +52,7 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     public componentWillMount() {
+        this.props.load();
         this.loadMailFromStorage();
     }
 
@@ -119,22 +121,18 @@ export default class Menu extends React.Component<IProps, IState> {
         b.searchAll('Dec 1, 2017').then((data: IBox[]) => {
             this.saveMailToStorage(data);
             logger('loadMailFromImap', data);
-            this.setState({
-                box: data,
-            });
-            this.props.load();
         });
     }
 
     protected saveMailToStorage(data: IBox[]) {
         Storage.set('list', data, {}, (err: Error) => {
             logger('saveMailToStorage');
+            this.loadMailFromStorage();
             if (err) { throw err; }
         });
     }
 
     protected loadMailFromStorage() {
-        this.props.load();
         Storage.get('list', {}, (err, data: IBox[]) => {
             logger('loadMailFromStorage', data);
             this.props.load();
@@ -144,14 +142,20 @@ export default class Menu extends React.Component<IProps, IState> {
         });
     }
 
-    protected concatBox(): Array<{
-        icon: string;
-        onClick: () => void;
-        text: string;
-        important?: number;
-    }> {
+    protected concatBox(): IBtn[] {
         if (this.state.box.length >= 0) {
-            return this.state.box.map(this.mappingBox);
+            let unfilled: string = "";
+            let unfilledCount: number = 0;
+            for (let i of this.state.box) {
+                if (i.mails.length <= 0) {
+                    unfilled += `${i.gName},`;
+                    unfilledCount++;
+                }
+            }
+            return [...this.state.box.map(this.mappingBox), {
+                text: 'description',
+                description: `有 ${unfilledCount} 个文件夹被隐藏了，它们是 ${unfilled} 因为这些文件夹中没有内容。`,
+            }];
         } else {
             return [];
         }
@@ -167,16 +171,30 @@ export default class Menu extends React.Component<IProps, IState> {
         text: string;
         important?: number;
     } {
-        return {
-            icon: this.getIcon(value.name),
-            onClick: () => {
-                this.props.history.replace(`/list/${index}`);
-                this.setState({
-                    currentBox: index,
-                });
-            },
-            text: value.name,
-        };
+        if (value.mails.length <= 0) {
+            return {
+                icon: this.getIcon(value.name),
+                important: 0,
+                onClick: () => {
+                    this.props.history.replace(`/list/${index}`);
+                    this.setState({
+                        currentBox: index,
+                    });
+                },
+                text: value.name,
+            };
+        } else {
+            return {
+                icon: this.getIcon(value.name),
+                onClick: () => {
+                    this.props.history.replace(`/list/${index}`);
+                    this.setState({
+                        currentBox: index,
+                    });
+                },
+                text: value.name,
+            };
+        }
     }
 
     protected getIcon(content: string): string {

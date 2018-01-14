@@ -6,6 +6,7 @@ export interface IBtn {
     onClick?: () => void;
     important?: number;
     text: string;
+    description?: string;
 }
 
 export interface IProps {
@@ -42,9 +43,19 @@ export default class Component extends React.Component<IProps, {}> {
             </div>);
         }
 
+        if (value.text === 'description') {
+            return (<div key={index} className={this.props.alignRow ? "rows" : "columns"} style={{ paddingLeft: '10px', cursor: 'help' }}>
+                <a title={value.description}>
+                    (MORE)<i className="fas fa-question-circle fa-fw" />
+                </a>
+            </div>);
+        }
+
         let important: string;
-        if (value.important) {
+        if (value.important !== void 0) {
             switch (value.important) {
+                case 0:
+                    return;
                 case 1:
                     important = 'important1';
                     break;

@@ -146,9 +146,12 @@ class Component extends React.Component<IProps, IState> {
                 loading={this.state.loading}
             />
             <div className={"entire" + (this.state.fade ? " disable" : " enable")}>
-                <Route>
-                    <Redirect to="/list/1" />
-                </Route>
+                <Route
+                    path="/"
+                    exact={true}
+                    render={() =>
+                        (<Redirect to="/list/1" />)
+                    } />
                 <PropsRoute
                     path="/list/:box"
                     exact={true}

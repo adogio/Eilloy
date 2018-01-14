@@ -127,6 +127,8 @@ export default class Menu extends React.Component<IProps, IState> {
                 <div className={`under-create ${this.state.create ? "create" : "uncreate"}`}>
                     <Create
                         onChange={this.onEditorChange}
+                        sign={this.props.user.sign}
+                        under={this.state.mail ? this.state.mail.content : ""}
                         more={[{
                             icon: 'paper-plane',
                             onClick: this.sendEmail,
@@ -208,7 +210,7 @@ export default class Menu extends React.Component<IProps, IState> {
                         回复给: {mail.returnPath ? mail.returnPath.text : '没有这项信息'}
                     <br />
                     {mail.received ? mail.received.map((value: string, index: number) => {
-                        return <span key={index}>
+                        return (<span key={index}>
                             <i className="fa fa-server fa-fw" />&nbsp;
                             来源&nbsp;
                         {index + 1}
@@ -220,7 +222,7 @@ export default class Menu extends React.Component<IProps, IState> {
                                 {value.substring(0, 40) +
                                     (value.length > 40 ? "..." : "")}
                                 <br />
-                            </a></span>;
+                            </a></span>);
                     }) : void 0}
                 </div>
                 <div className="info">

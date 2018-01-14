@@ -7,6 +7,7 @@ export default interface IUser extends Config {
     imap: string;
     portImap: number;
     portSmtp: number;
+    sign?: string;
     tls?: boolean;
     nickName: string;
     tlsOptions?: {

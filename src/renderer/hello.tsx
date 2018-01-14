@@ -63,6 +63,7 @@ class Component extends React.Component<IProps, IState> {
             user: 'eilloytest@mail.com',
             password: 'R2pOD2E6sYttC0h',
             nickName: '😺😸😹',
+            sign: '<p>😺😸😹</p><p>eilloytest@mail.com</p>',
             tls: true,
             tlsOptions: {
                 rejectUnauthorized: false,

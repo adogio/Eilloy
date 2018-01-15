@@ -63,7 +63,9 @@ export default class Menu extends React.Component<IProps, IState> {
                     icon={[
                         {
                             icon: "angle-double-right",
-                            onClick: () => logger('temp', 'test'),
+                            onClick: () => {
+                                this.props.history.replace('/queue');
+                            },
                             text: "队列",
                             important: 2,
                         },

@@ -3,9 +3,12 @@ import * as React from "react";
 import { Redirect, Route } from 'react-router-dom';
 
 import Loading from '../components/loading';
+import PropsRoute from '../components/propsRoute';
+
 import Email from './email';
 import FullCreate from './fullCreate';
 import Menu from "./menu";
+import Queue from './queue';
 import Relase from './release';
 import Warning from './warning';
 import Welcome from './welcome';
@@ -29,21 +32,6 @@ export interface IState {
     warning: IWarning;
     release: IRelease;
 }
-
-const renderMergedProps: any = (component, ...rest) => {
-    const finalProps = Object.assign({}, ...rest);
-    return (
-        React.createElement(component, finalProps)
-    );
-};
-
-const PropsRoute: any = ({ component, ...rest }) => {
-    return (
-        <Route {...rest} render={(routeProps) => {
-            return renderMergedProps(component, routeProps, rest);
-        }} />
-    );
-};
 
 class Component extends React.Component<IProps, IState> {
 
@@ -168,6 +156,14 @@ class Component extends React.Component<IProps, IState> {
                     load={this.load}
                     user={this.user}
                     component={FullCreate} />
+                <PropsRoute
+                    path="/queue"
+                    exact={true}
+                    warning={this.startWarning}
+                    release={this.relaseWarning}
+                    load={this.load}
+                    user={this.user}
+                    component={Queue} />
                 <PropsRoute
                     path="/email/:box/:mail/:re"
                     exact={true}

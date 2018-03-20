@@ -52,6 +52,7 @@
     "@types/imap": "^0.8.29",
     "@types/mailparser": "^2.0.2",
     "@types/nodemailer": "^4.3.1",
+    "dorimt": "^0.2.5",
     "draft-js": "^0.10.4",
     "draft-js-export-html": "^1.2.0",
     "electron-json-storage": "^4.0.2",
